@@ -100,7 +100,7 @@ export default {
       countCheck: 0,
       currentTrackDuration: 0,
       //
-      color: '#2aff09',
+      color: '#8dff97',
       progressPercent: 0
     }
   },

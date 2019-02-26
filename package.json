@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@my-script/vue-circle-progress": "^1.0.1",
     "bulma": "^0.7.4",
     "fontawesome-vue": "0.0.1",
     "ionicons": "^4.5.5",
