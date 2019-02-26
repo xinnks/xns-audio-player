@@ -2,6 +2,8 @@
 
 > a simple customizable audio player powered by vue
 
+<img src="https://www.dropbox.com/s/3hc6fo92wk3yof8/xns-music-player.gif?dl=1" />
+
 ## Build Setup
 
 ``` bash
