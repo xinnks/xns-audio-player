@@ -17,6 +17,7 @@
     "bulma": "^0.7.4",
     "fontawesome-vue": "0.0.1",
     "ionicons": "^4.5.5",
+    "v-progress": "^1.0.2",
     "vue": "^2.5.2",
     "vue-audio-visual": "^1.3.0",
     "vue-fa": "^1.3.0",

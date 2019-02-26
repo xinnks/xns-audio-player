@@ -3,9 +3,14 @@
     <div class="container">
       <div class="columns">
         <div class="column is-4">
-          <div :style="'background: url(' + Songs[presentSongId].cover + ');background-size: contain;'" class="card play-controls">
+          <div :style="'background: url(' + Songs[presentSongId].cover + ');background-size: contain;background-repeat: no-repeat'" class="card play-controls">
             <div class="card-content">
-              <div class="level">
+              <div class="columns progress-window">
+                <div class="column is-12">
+                  <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>
+                </div>
+              </div>
+              <div class="level controls-window">
                 <div class="level-item">
                   <div class="columns is-mobile">
                     <div class="column">
@@ -42,12 +47,14 @@
               <range-slider class="volume" v-model="volume" :min="0" :max="1" :step="0.05"></range-slider>
             </div>
             <div class="level-right">
-              <div class="timer">{{timeBufferMins | doubleDigits}} : {{timeBufferSecs | doubleDigits}}</div>
+              <div class="timer">{{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>
             </div>
           </div>
         </div>
         <div class="column is-8">
           <songs-playlist :current-track-id="presentSongId" @playSelectSong="playSong" :Songs="Songs"></songs-playlist>
+            <!--<v-line :percent="progressPercent" stroke-width="4" :strokeColor="color"/>
+            <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>-->
         </div>
       </div>
     </div>
@@ -59,10 +66,11 @@ import SongBlock from './components/SongBlock'
 import SongsPlaylist from './components/SongsPlaylist'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
+import {VCircle, VLine} from 'v-progress'
 export default {
   name: 'App',
   components: {
-    SongsPlaylist, SongBlock, RangeSlider
+    SongsPlaylist, SongBlock, RangeSlider, VCircle, VLine
   },
   data () {
     return {
@@ -70,7 +78,7 @@ export default {
       Songs: [
         { audio: 'https://rorg.z1.fm/d/3f/ti_ft_eminem_-_thats_all_she_wrote_(zv.fm).mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'http://images.genius.com/f55abc725080eb05147e45ce3cd406a8.1000x1000x1.jpg' },
         { audio: 'https://dll.z1.fm/music/8/e8/ellie_goulding_feat_diplo__swae_lee_-_close_to_me.mp3', artist: 'Ellie Goulding Feat. Diplo & Swae Lee', tittle: 'Close To Me', album: 'None', cover: 'https://upload.wikimedia.org/wikipedia/en/thumb/b/bc/Ellie_Goulding_and_Diplo_–_Close_to_Me.png/220px-Ellie_Goulding_and_Diplo_–_Close_to_Me.png' },
-        { audio: 'https://rorg.z1.fm/8/ff/sia_-_lullaby_zaycevnet_(zv.fm).mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
+        { audio: 'https://rorg.z1.fm/8/ff/sia_-_lullaby_zaycevnet_(zv.fm).mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'https://images.shazam.com/coverart/t54664010-b708389188_s400.jpg' },
         { audio: 'https://muz.z1.fm/6/6f/lp_-_muddy_waters_(zf.fm).mp3', artist: 'LP', tittle: 'Muddy Waters', album: '', cover: 'https://images.shazam.com/coverart/t337772630-i1186767461_s400.jpg' }
         /* { audio: 'http://127.0.0.1:8000/storage/audio/77V_11YC8R147T45X1Z5X84PNMAC6Z.mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
         { audio: 'http://127.0.0.1:8000/storage/audio/CCP84EMP61920RGI76Y5TXJKSXT04F.mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
@@ -90,7 +98,10 @@ export default {
       currentTrackTime: 0,
       lastRecordedTrackTime: -1,
       countCheck: 0,
-      currentTrackDuration: 0
+      currentTrackDuration: 0,
+      //
+      color: '#2aff09',
+      progressPercent: 0
     }
   },
   watch: {
@@ -110,8 +121,10 @@ export default {
     }
   },
   mounted () {
-    // console.log(this.podcasts)
     let xns = this
+    /* $(xns.audio).on('loadedmetadata', function(){
+      alert(xns.audio.duration)
+    }) */
     setTimeout(function () {
       xns.lastSongId = xns.Songs.length - 1
     }, 1500)
@@ -122,24 +135,15 @@ export default {
       let xns = this
       setTimeout(function () {
         xns.currentTrackTime = parseInt(xns.audio.currentTime)
-        console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
-        if (xns.countCheck === 1) { // initializer start check
-          console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
-          xns.currentTrackDuration = Math.floor(xns.audio.duration)
+        // console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
+        xns.progressPercent = (xns.currentTrackTime / xns.audio.duration) * 100
+        if (xns.countCheck === 0) { // initializer start check
+          // console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
+          let ctdSecs = (parseInt(xns.audio.duration) % 60) < 10 ? '0' + parseInt(xns.audio.duration) % 60 : (parseInt(xns.audio.duration) % 60)
+          xns.currentTrackDuration = parseInt(parseInt(xns.audio.duration) / 60) + ' : ' + ctdSecs
         }
         if (xns.currentTrackTime !== xns.lastRecordedTrackTime) {
-          /* console.log('duration : ' + xns.audio.duration)
-          console.log('paused : ' + xns.audio.paused)
-          console.log('defaultPlaybackRate : ' + xns.audio.defaultPlaybackRate)
-          console.log('playbackRate : ' + xns.audio.playbackRate)
-          console.log('played : ' + xns.audio.played)
-          console.log('seekable : ' + xns.audio.seekable)
-          console.log('ended : ' + xns.audio.ended)
-          console.log('loop : ' + xns.audio.loop)
-          console.log('error : ' + xns.audio.error)
-          console.log('seeking : ' + xns.audio.seeking)
-          console.log('buffered : ' + xns.audio.buffered) */
-          console.log(parseInt(xns.audio.currentTime))
+          // console.log(parseInt(xns.audio.currentTime))
           if (parseInt(xns.audio.currentTime) >= 60) {
             xns.timeBufferMins = Math.floor(xns.audio.currentTime / 60)
             xns.timeBufferSecs = parseInt(Math.floor(xns.audio.currentTime)) % 60
@@ -149,7 +153,7 @@ export default {
           xns.duration -= 1
           xns.timeLapse = !xns.timeLapse
           xns.timeLapse = true // continue time lapse
-          this.countCheck += 1
+          xns.countCheck += 1
           //
           xns.lastRecordedTrackTime = parseInt(Math.floor(xns.audio.currentTime))
         } else {
@@ -271,8 +275,8 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
-.play-controls > div.card-content > div.level{
-  margin-top: 80%;
+.play-controls > div.card-content > div.level.controls-window{
+  margin-top: 5%;
 }
 .play-controls-button{
   -webkit-border-radius: 20px;
@@ -288,14 +292,20 @@ export default {
 .volume{
   float: left;
 }
-.level > div.level-item > div.columns{
+.level.controls-window{
   background: rgba(132, 175, 202, 0.3);
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
   border-radius: 40px;
   border: solid 2px rgba(132, 175, 202, .4) ;
 }
-  .play-control-item{
-    color: #000;
-  }
+.level.progress-window{
+  padding-top: 5px;
+  max-height: 200px;
+  max-width: 200px;
+  margin: 50px;
+}
+.play-control-item{
+  color: #000;
+}
 </style>
