@@ -1,9 +1,15 @@
 <template>
   <div class="section">
     <div class="container">
+      <div class="level">
+        <div class="level-item">
+          <h3>XNS AUDIO PLAYER</h3>
+        </div>
+      </div>
+      &nbsp;
       <div class="columns">
-        <div class="column is-4">
-          <div :style="'background: url(' + Songs[presentSongId].cover + ');background-size: contain;background-repeat: no-repeat'" class="card play-controls">
+        <div :style="'background: url(' + Songs[presentSongId].cover + ');margin-top:12px;background-repeat: no-repeat;background-position:center;background-size: cover'" class="column is-4 cover-overlay">
+          <div class="card play-controls">
             <div class="card-content">
               <div class="columns progress-window">
                 <div class="column is-12">
@@ -42,19 +48,19 @@
               </div>
             </div>
           </div>
-          <div class="level">
+          <div class="level volume-timer">
             <div class="level-left">
               <range-slider class="volume" v-model="volume" :min="0" :max="1" :step="0.05"></range-slider>
+              <span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="continuousPlay=!continuousPlay" :class="continuousPlay ? 'is-small is-transparent continuous-play-on' : 'is-small is-transparent continuous-play-off'"><ion-icon name="refresh"></ion-icon></span>
             </div>
             <div class="level-right">
-              <div class="timer">{{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>
+              <div class="timer"> {{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>
             </div>
           </div>
         </div>
-        <div class="column is-8">
+        <div class="column playlist-col is-8">
+          <progress-bar bar-color="#333333" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>
           <songs-playlist :current-track-id="presentSongId" @playSelectSong="playSong" :Songs="Songs"></songs-playlist>
-            <!--<v-line :percent="progressPercent" stroke-width="4" :strokeColor="color"/>
-            <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>-->
         </div>
       </div>
     </div>
@@ -66,22 +72,30 @@ import SongBlock from './components/SongBlock'
 import SongsPlaylist from './components/SongsPlaylist'
 import RangeSlider from 'vue-range-slider'
 import 'vue-range-slider/dist/vue-range-slider.css'
-import {VCircle, VLine} from 'v-progress'
+import { VCircle } from 'v-progress'
+import ProgressBar from 'vue-simple-progress'
+import Vue from 'vue'
+import VTooltip from 'v-tooltip'
+import './assets/tooltip.css'
+Vue.use(VTooltip)
 export default {
   name: 'App',
   components: {
-    SongsPlaylist, SongBlock, RangeSlider, VCircle, VLine
+    SongsPlaylist, SongBlock, RangeSlider, VCircle, ProgressBar
   },
   data () {
     return {
       loading: 'getLoadingState',
       Songs: [
-        { audio: 'https://rorg.z1.fm/d/3f/ti_ft_eminem_-_thats_all_she_wrote_(zv.fm).mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'http://images.genius.com/f55abc725080eb05147e45ce3cd406a8.1000x1000x1.jpg' },
-        { audio: 'https://dll.z1.fm/music/8/e8/ellie_goulding_feat_diplo__swae_lee_-_close_to_me.mp3', artist: 'Ellie Goulding Feat. Diplo & Swae Lee', tittle: 'Close To Me', album: 'None', cover: 'https://upload.wikimedia.org/wikipedia/en/thumb/b/bc/Ellie_Goulding_and_Diplo_–_Close_to_Me.png/220px-Ellie_Goulding_and_Diplo_–_Close_to_Me.png' },
-        { audio: 'https://rorg.z1.fm/8/ff/sia_-_lullaby_zaycevnet_(zv.fm).mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'https://images.shazam.com/coverart/t54664010-b708389188_s400.jpg' },
-        { audio: 'https://muz.z1.fm/6/6f/lp_-_muddy_waters_(zf.fm).mp3', artist: 'LP', tittle: 'Muddy Waters', album: '', cover: 'https://images.shazam.com/coverart/t337772630-i1186767461_s400.jpg' },
-        { audio: 'https://rorg.z1.fm/f/d6/david_dallas_-_runnin_(zf.fm).mp3', artist: 'David Dallas', tittle: 'Runnin', album: '', cover: 'https://images.shazam.com/coverart/t93555159-i1095888717_s400.jpg'},
-        { audio: 'https://jt2.z1.fm/f/bf/labrinth_-_vultures_(zvukoff.ru).mp3', artist: 'Labrinth', tittle: 'Vultures', album: '', cover: 'https://img.discogs.com/VxazHKYLqgy5_BLN2coSYgNFusw=/fit-in/300x300/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-3512282-1392987047-7461.jpeg.jpg'}
+        { audio: 'https://rorg.z1.fm/d/3f/ti_ft_eminem_-_thats_all_she_wrote_(zv.fm).mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189593/random/f55abc725080eb05147e45ce3cd406a8.1000x1000x1.jpg' },
+        { audio: 'https://dll.z1.fm/music/8/e8/ellie_goulding_feat_diplo__swae_lee_-_close_to_me.mp3', artist: 'Ellie Goulding Feat. Diplo & Swae Lee', tittle: 'Close To Me', album: 'None', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189716/random/ellie-goulding-close-to-me-lg.jpg' },
+        { audio: 'https://rorg.z1.fm/8/ff/sia_-_lullaby_zaycevnet_(zv.fm).mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189786/random/t54664010-b708389188_s400.jpg' },
+        { audio: 'https://muz.z1.fm/6/6f/lp_-_muddy_waters_(zf.fm).mp3', artist: 'LP', tittle: 'Muddy Waters', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189837/random/t337772630-i1186767461_s400.jpg' },
+        { audio: 'https://rorg.z1.fm/f/d6/david_dallas_-_runnin_(zf.fm).mp3', artist: 'David Dallas', tittle: 'Runnin', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189882/random/t93555159-i1095888717_s400.jpg'},
+        { audio: 'https://jt2.z1.fm/f/bf/labrinth_-_vultures_(zvukoff.ru).mp3', artist: 'Labrinth', tittle: 'Vultures', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189373/random/R-3512282-1392987047-7461.jpeg.jpg'},
+        { audio: 'https://muz17.z1.fm/b/10/niall_horan_-_slow_hands_slow_hands_(zf.fm).mp3', artist: 'Niall Horan', tittle: 'Slow Hands', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551190705/random/niall-horan-slow-hands-audio-02.jpg'},
+        { audio: 'https://muz.z1.fm/a/fa/davide_esposito_-_a_cavallo_del_vento_(zf.fm).mp3', artist: 'Davide Esposito', tittle: 'A Cavallo Del Vento', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551190889/random/500x500.jpg'},
+        { audio: 'https://dll.z1.fm/music/9/88/benny_blanco__halsey__khalid_-_eastside.mp3', artist: 'Benny Blanco, Halsey & Khalid', tittle: 'Eastside', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551192768/random/artworks-000432419499-7ts3gr-t500x500.jpg'}
         /* { audio: 'http://127.0.0.1:8000/storage/audio/77V_11YC8R147T45X1Z5X84PNMAC6Z.mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
         { audio: 'http://127.0.0.1:8000/storage/audio/CCP84EMP61920RGI76Y5TXJKSXT04F.mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
         { audio: 'http://127.0.0.1:8000/storage/audio/14AIFFI1PA_6EJ-FLT89JY00T9V89_.mp3', artist: 'LP', tittle: 'Muddy Waters [Live Session]', album: '', cover: 'http://127.0.0.1:8000/storage/photos/SDBPOQCA67XGHGGFMD58.jpg' },
@@ -103,7 +117,8 @@ export default {
       currentTrackDuration: 0,
       //
       color: '#8dff97',
-      progressPercent: 0
+      progressPercent: 0,
+      continuousPlay: false
     }
   },
   watch: {
@@ -169,6 +184,9 @@ export default {
             this.countCheck = 0 // initializer end
             xns.isPlaying = false
             xns.isPaused = false
+            if (xns.continuousPlay) { // if continuous play === true
+              xns.nextSong()
+            }
           }
         }
       }, 1000)
@@ -225,6 +243,9 @@ export default {
         this.presentSongId += 1
         this.play(this.presentSongId, 'next')
       } else {
+        if (this.continuousPlay) { // if continuous play === true
+          this.play(0) // restart the playlist
+        }
         console.log('We\'ve arrived at the end of the playlist!')
       }
       //
@@ -251,6 +272,7 @@ export default {
         this.audio.load()
         this.isPlaying = false
         this.isPaused = false
+        this.continuousPlay = false // halt continuous play
       } else {
         console.log('Nothing Playing!')
       }
@@ -278,7 +300,8 @@ export default {
   background-repeat: no-repeat;
 }
 .play-controls > div.card-content > div.level.controls-window{
-  margin-top: 5%;
+  margin-top: 10px;
+  padding-top: 5px;
 }
 .play-controls-button{
   -webkit-border-radius: 20px;
@@ -289,25 +312,64 @@ export default {
   float: right;
   font-size: large;
   font-weight: 600;
-  color: rgba(255, 138, 28, 0.7);
+  color: rgba(255, 255, 255, 1);
 }
 .volume{
   float: left;
 }
 .level.controls-window{
-  background: rgba(132, 175, 202, 0.3);
+  background: rgba(51, 51, 51, 0.85);
   -webkit-border-radius: 40px;
   -moz-border-radius: 40px;
   border-radius: 40px;
-  border: solid 2px rgba(132, 175, 202, .4) ;
+  border: solid 2px rgba(51, 51, 51, .4) ;
 }
 .level.progress-window{
   padding-top: 5px;
   max-height: 200px;
-  max-width: 200px;
   margin: 50px;
 }
 .play-control-item{
-  color: #000;
+  color: #ffffff;
+}
+.card.play-controls{
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
+}
+.volume-timer{
+  background: rgba(51, 51, 51, 0.85);
+}
+.volume-timer > div.level-right > div.timer{
+  padding-right: 5px;
+}
+.list{
+  border-radius: 0;
+}
+.is-transparent{
+  background-color: transparent !important;
+}
+.continuous-play-on{
+  color: yellow;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.continuous-play-off{
+  color: #fff;
+  margin-top: 4px;
+  cursor: pointer;
+}
+.cover-overlay{
+  background-color: rgba(0,0,0, .4);
+  margin-top: 12px;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-height: 496px;
+}
+h3{
+  font-size: 24px;
+  font-family: "Berlin Sans FB";
+  font-weight: 800;
+}
+.playlist-col{
+  padding-top: 0;
 }
 </style>

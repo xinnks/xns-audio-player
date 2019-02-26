@@ -19,10 +19,12 @@
     "fontawesome-vue": "0.0.1",
     "ionicons": "^4.5.5",
     "v-progress": "^1.0.2",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.2",
     "vue-audio-visual": "^1.3.0",
     "vue-fa": "^1.3.0",
-    "vue-range-slider": "^0.6.0"
+    "vue-range-slider": "^0.6.0",
+    "vue-simple-progress": "^1.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
