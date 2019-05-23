@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="column playlist-col is-8">
-          <progress-bar bar-color="#333333" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>
+          <progress-bar :bar-color="!audio.duration ? '#ffffff' : '#333333'" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>
           <songs-playlist :current-track-id="presentSongId" @playSelectSong="playSong" :Songs="Songs"></songs-playlist>
         </div>
       </div>
