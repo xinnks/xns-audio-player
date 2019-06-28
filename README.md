@@ -1,4 +1,4 @@
-# xns-audio-player
+# xns-audio-player [Demo](https://xns-audio-player.netlify.com/ "Demo")
 
 > a simple customizable audio player powered by vue and some visuals from <a target="_blank" href="https://github.com/jgthms/bulma">bulma</a>, <a target="_blank" href="https://github.com/Akryum/v-tooltip">v-tooltip</a>, <a target="_blank" href="https://github.com/MissHoya/v-progress">v-progress</a>, <a target="_blank" href="https://github.com/dzwillia/vue-simple-progress">vue-simple-progress</a> & <a target="_blank" href="https://github.com/ktsn/vue-range-slider">vue-range-slider</a>
 
