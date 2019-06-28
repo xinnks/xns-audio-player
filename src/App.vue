@@ -71,7 +71,7 @@
     import PauseIcon from 'vue-ionicons/dist/md-pause'
     import SquareIcon from 'vue-ionicons/dist/md-square'
     import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward'
-    Vue.use(VTooltip)
+    Vue.use(VTooltip);
     export default {
         name: 'App',
         components: {
@@ -117,60 +117,60 @@
             },
             timeLapse () {
                 if (this.timeLapse) {
-                    this.timeLapse = false
+                    this.timeLapse = false;
                     this.viewShit()
                 }
             },
             audio () {
-                this.currentTrackTime = parseInt(this.audio.currentTime)
+                this.currentTrackTime = parseInt(this.audio.currentTime);
                 this.lastRecordedTrackTime = -1
                 // console.log('changed Track')
             }
         },
         mounted () {
-            let xns = this
+            let xns = this;
             setTimeout(function () {
                 xns.lastSongId = xns.Songs.length - 1
-            }, 1500)
+            }, 1500);
             this.audio.volume = this.volume
         },
         methods: {
             viewShit () {
-                let xns = this
+                let xns = this;
                 setTimeout(function () {
-                    xns.currentTrackTime = parseInt(xns.audio.currentTime)
+                    xns.currentTrackTime = parseInt(xns.audio.currentTime);
                     // console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
-                    xns.progressPercent = (xns.currentTrackTime / xns.audio.duration) * 100
+                    xns.progressPercent = (xns.currentTrackTime / xns.audio.duration) * 100;
                     if (xns.countCheck === 0) { // initializer start check
                         // console.log('Current Track Time: ' + xns.currentTrackTime + ' lstRecTime: ' + xns.lastRecordedTrackTime)
-                        let ctdSecs = (parseInt(xns.audio.duration) % 60) < 10 ? '0' + parseInt(xns.audio.duration) % 60 : (parseInt(xns.audio.duration) % 60)
+                        let ctdSecs = (parseInt(xns.audio.duration) % 60) < 10 ? '0' + parseInt(xns.audio.duration) % 60 : (parseInt(xns.audio.duration) % 60);
                         xns.currentTrackDuration = parseInt(parseInt(xns.audio.duration) / 60) + ' : ' + ctdSecs
                     }
                     if (xns.currentTrackTime !== xns.lastRecordedTrackTime) {
                         // console.log(parseInt(xns.audio.currentTime))
                         if (parseInt(xns.audio.currentTime) >= 60) {
-                            xns.timeBufferMins = Math.floor(xns.audio.currentTime / 60)
+                            xns.timeBufferMins = Math.floor(xns.audio.currentTime / 60);
                             xns.timeBufferSecs = parseInt(Math.floor(xns.audio.currentTime)) % 60
                         } else {
                             xns.timeBufferSecs = parseInt(Math.floor(xns.audio.currentTime))
                         }
-                        xns.duration -= 1
-                        xns.timeLapse = !xns.timeLapse
-                        xns.timeLapse = true // continue time lapse
-                        xns.countCheck += 1
+                        xns.duration -= 1;
+                        xns.timeLapse = !xns.timeLapse;
+                        xns.timeLapse = true; // continue time lapse
+                        xns.countCheck += 1;
                         //
                         xns.lastRecordedTrackTime = parseInt(Math.floor(xns.audio.currentTime))
                     } else {
                         if (!xns.audio.paused) {
-                            xns.isPlaying = true
+                            xns.isPlaying = true;
                             xns.isPaused = false
                         } else {
-                            xns.timeBufferMins = 0
-                            xns.timeBufferSecs = 0
-                            xns.timeLapse = false // stop time lapse
-                            this.countCheck = 0 // initializer end
-                            xns.isPlaying = false
-                            xns.isPaused = false
+                            xns.timeBufferMins = 0;
+                            xns.timeBufferSecs = 0;
+                            xns.timeLapse = false; // stop time lapse
+                            this.countCheck = 0; // initializer end
+                            xns.isPlaying = false;
+                            xns.isPaused = false;
                             if (xns.continuousPlay) { // if continuous play === true
                                 xns.nextSong()
                             }
@@ -179,55 +179,55 @@
                 }, 1000)
             },
             playSong (SongId) {
-                this.presentSongId = SongId
-                this.audio.src = this.Songs[SongId].audio
-                this.audio.play()
-                this.isPlaying = true
-                this.isPaused = false
+                this.presentSongId = SongId;
+                this.audio.src = this.Songs[SongId].audio;
+                this.audio.play();
+                this.isPlaying = true;
+                this.isPaused = false;
                 //
-                this.countCheck = 0
-                this.lastRecordedTrackTime = -1
-                this.timeBufferMins = 0
+                this.countCheck = 0;
+                this.lastRecordedTrackTime = -1;
+                this.timeBufferMins = 0;
                 this.viewShit()
             },
             play (songId = this.presentSongId, type = '') {
                 if (this.isPlaying && !this.isPaused) {
                     if (type !== '') { // next/previous
-                        this.audio.src = this.Songs[songId].audio
-                        this.audio.play()
-                        this.isPlaying = true
+                        this.audio.src = this.Songs[songId].audio;
+                        this.audio.play();
+                        this.isPlaying = true;
                         this.isPaused = false
                     } else { // pause
-                        this.audio.pause()
-                        this.isPlaying = false
+                        this.audio.pause();
+                        this.isPlaying = false;
                         this.isPaused = true
                     }
                 } else if (!this.isPlaying && this.isPaused) {
                     if (type !== '') { // next/previous
-                        this.audio.src = this.Songs[songId].audio
-                        this.audio.play()
-                        this.isPlaying = true
+                        this.audio.src = this.Songs[songId].audio;
+                        this.audio.play();
+                        this.isPlaying = true;
                         this.isPaused = false
                     } else { // resume playing
-                        this.audio.play()
-                        this.isPlaying = true
+                        this.audio.play();
+                        this.isPlaying = true;
                         this.isPaused = false
                     }
                 } else if (!this.isPlaying && !this.isPaused) {
-                    this.audio.src = this.Songs[songId].audio
-                    this.audio.play()
-                    this.isPlaying = true
+                    this.audio.src = this.Songs[songId].audio;
+                    this.audio.play();
+                    this.isPlaying = true;
                     this.isPaused = false
                 }
                 //
-                this.countCheck = 0
-                this.lastRecordedTrackTime = -1
-                this.timeBufferMins = 0
+                this.countCheck = 0;
+                this.lastRecordedTrackTime = -1;
+                this.timeBufferMins = 0;
                 this.viewShit()
             },
             nextSong () {
                 if ((this.presentSongId + 1) <= this.lastSongId) {
-                    this.presentSongId += 1
+                    this.presentSongId += 1;
                     this.play(this.presentSongId, 'next')
                 } else {
                     if (this.continuousPlay) { // if continuous play === true
@@ -235,34 +235,34 @@
                     }
                     // console.log('We\'ve arrived at the end of the playlist!')
                 }
-                this.countCheck = 0
-                this.lastRecordedTrackTime = -1
-                this.timeBufferMins = 0
+                this.countCheck = 0;
+                this.lastRecordedTrackTime = -1;
+                this.timeBufferMins = 0;
                 this.viewShit()
             },
             prevSong () {
                 if ((this.presentSongId - 1) >= 0) {
-                    this.presentSongId -= 1
+                    this.presentSongId -= 1;
                     this.play(this.presentSongId, 'prev')
                 } else {
                     // console.log('We\'ve arrived at the start of the playlist!')
                 }
-                this.countCheck = 0
-                this.lastRecordedTrackTime = -1
-                this.timeBufferMins = 0
+                this.countCheck = 0;
+                this.lastRecordedTrackTime = -1;
+                this.timeBufferMins = 0;
                 this.viewShit()
             },
             stop () {
                 if (this.audio) {
-                    this.audio.load()
-                    this.isPlaying = false
-                    this.isPaused = false
+                    this.audio.load();
+                    this.isPlaying = false;
+                    this.isPaused = false;
                     this.continuousPlay = false // halt continuous play
                 } else {
                     // console.log('Nothing Playing!')
                 }
-                this.countCheck = 1
-                this.lastRecordedTrackTime = -1
+                this.countCheck = 1;
+                this.lastRecordedTrackTime = -1;
                 this.timeBufferMins = 0
             }
         }
@@ -286,11 +286,6 @@
   .play-controls > div.card-content > div.level.controls-window{
     margin-top: 10px;
     padding-top: 5px;
-  }
-  .play-controls-button{
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
   }
   .timer{
     float: right;
@@ -344,7 +339,6 @@
   }
   .cover-overlay{
     background-color: rgba(0,0,0, .4);
-    margin-top: 12px;
     padding: 0 !important;
     margin: 0 !important;
     max-height: 496px;
