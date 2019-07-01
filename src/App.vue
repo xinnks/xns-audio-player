@@ -35,6 +35,11 @@
                   </div>
                 </div>
               </div>
+              <div class="columns track-scrubbing">
+                  <div class="column is-12 track-scrubbing">
+                      <vue-slider @change="scrubToTime()" v-model="progressPercent" :process="true" :interval="0.01"></vue-slider>
+                  </div>
+              </div>
             </div>
           </div>
           <div class="level volume-timer">
@@ -60,6 +65,7 @@
     import SongsPlaylist from './components/SongsPlaylist'
     import RangeSlider from 'vue-range-slider'
     import 'vue-range-slider/dist/vue-range-slider.css'
+    import VueSlider from 'vue-slider-component'
     import { VCircle } from 'v-progress'
     import ProgressBar from 'vue-simple-progress'
     import Vue from 'vue'
@@ -75,7 +81,7 @@
     export default {
         name: 'App',
         components: {
-            SongsPlaylist, RangeSlider, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon
+            SongsPlaylist, RangeSlider, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
         },
         data () {
             return {
@@ -116,9 +122,20 @@
                 this.audio.volume = this.volume
             },
             timeLapse () {
+                let xns = this
                 if (this.timeLapse) {
                     this.timeLapse = false;
                     this.viewShit()
+                }
+                if((this.currentTrackDuration === 'NaN : NaN') || ((this.progressPercent === 'NaN') || (this.progressPercent === 0))){ // fix to displaying track time 'NaN : NaN' & timeBufferMins being stuck at 0
+                    this.countCheck = 0
+                    this.viewShit()
+                    setTimeout(()=>{
+                        if((this.progressPercent === 'NaN') || (this.progressPercent === 0)){
+                            xns.audio.currentTime = xns.audio.currentTime;
+                            xns.viewShit()
+                        }
+                    }, 2000)
                 }
             },
             audio () {
@@ -179,6 +196,7 @@
                 }, 1000)
             },
             playSong (SongId) {
+                console.log(SongId)
                 this.presentSongId = SongId;
                 this.audio.src = this.Songs[SongId].audio;
                 this.audio.play();
@@ -264,6 +282,10 @@
                 this.countCheck = 1;
                 this.lastRecordedTrackTime = -1;
                 this.timeBufferMins = 0
+            },
+            scrubToTime(){
+                this.audio.currentTime = (this.progressPercent * this.audio.duration) / 100;
+                this.viewShit()
             }
         }
     }
@@ -277,6 +299,10 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  /*Track Scrobbing*/
+  .track-scrubbing > div{
+    padding: 0 !important;
   }
   .play-controls{
     min-height: 360px;

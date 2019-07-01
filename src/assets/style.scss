@@ -1,3 +1,7 @@
 @charset "utf-8";
 @import '~bulma/bulma.sass';
 @import '~vue-ionicons/ionicons.scss';
+$themeColor: #21FB92;
+
+/* import theme style */
+@import '~vue-slider-component/lib/theme/default.scss';
