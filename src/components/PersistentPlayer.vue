@@ -43,8 +43,11 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import {mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import VueSlider from 'vue-slider-component'
+import VTooltip from 'v-tooltip'
+import './../assets/tooltip.css'
 import RefreshIcon from 'vue-ionicons/dist/ios-refresh'
 import SkipBackwardIcon from 'vue-ionicons/dist/ios-skip-backward'
 import PlayIcon from 'vue-ionicons/dist/ios-play'
@@ -53,10 +56,11 @@ import SquareIcon from 'vue-ionicons/dist/ios-square'
 import SkipForwardIcon from 'vue-ionicons/dist/ios-skip-forward'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle.vue'
 import RevealIcon from 'vue-ionicons/dist/ios-arrow-up.vue'
+Vue.use(VTooltip);
 export default {
   	name: 'PersistentPlayer',
 	components: {
-	    RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon
+	    RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon, VTooltip
 	},
 	data(){
 		return { playerVolume: 0, playerProgressPercent: 0, hidePlayer: false}
@@ -78,7 +82,8 @@ export default {
 			'color',
 			'progressPercent',
 			'continuousPlay',
-			'timeLapse'
+			'timeLapse',
+			'volume'
 	]),
 		...mapGetters({getVolume: 'getVolume'})
 	},
@@ -101,12 +106,15 @@ export default {
             	this.updateCountCheck({countCheck: 0})
                 this.viewShit()
                 setTimeout(()=>{
-                    if((this.progressPercent === 'NaN') || (this.progressPercent === 0)){
+                    if((this.progressPercent === 'NaN') || isNaN(this.progressPercent) || (this.progressPercent === 0) || !this.progressPercent){
                         xns.updateAudioCurrentTime({currentTime: xns.audio.currentTime})
                         xns.viewShit()
                     }
                 }, 2000)
             }
+        },
+        volume(){
+            this.playerVolume = this.volume
         },
         audio () {
             this.currentTrackTime = parseInt(this.audio.currentTime);

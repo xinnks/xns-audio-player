@@ -1,6 +1,7 @@
 import Vue from 'vue'
-import App from './App.vue'
+import Player from './Player.vue'
 import store from './store'
+import router from './router'
 require('./assets/style.scss')
 
 Vue.config.productionTip = false
@@ -11,5 +12,6 @@ Vue.filter('doubleDigits', function (val) {
 
 new Vue({
   store,
-  render: h => h(App),
+  router,
+  render: h => h(Player),
 }).$mount('#app')
