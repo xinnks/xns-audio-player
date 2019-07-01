@@ -58,10 +58,12 @@
         </div>
       </div>
     </div>
+    <PersistentPlayer/>
   </div>
 </template>
 
 <script>
+    import PersistentPlayer from './components/PersistentPlayer'
     import SongsPlaylist from './components/SongsPlaylist'
     import RangeSlider from 'vue-range-slider'
     import 'vue-range-slider/dist/vue-range-slider.css'
@@ -81,7 +83,7 @@
     export default {
         name: 'App',
         components: {
-            SongsPlaylist, RangeSlider, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
+            SongsPlaylist, RangeSlider, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, PersistentPlayer
         },
         data () {
             return {
@@ -354,7 +356,7 @@
     background-color: transparent !important;
   }
   .continuous-play-on{
-    color: yellow;
+    color: #21FB92;
     margin-top: 4px;
     cursor: pointer;
   }
