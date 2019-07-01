@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import {mapActions, mapState, mapGetters, mapMutations } from 'vuex'
+    import {mapState, mapGetters } from 'vuex'
     import SongsPlaylist from './../components/SongsPlaylist'
     import VueSlider from 'vue-slider-component'
     import { VCircle } from 'v-progress'
@@ -66,111 +66,43 @@
     import PauseIcon from 'vue-ionicons/dist/md-pause'
     import SquareIcon from 'vue-ionicons/dist/md-square'
     import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward'
+    import PlayerMixin from './../mixins/PlayerMixin'
     Vue.use(VTooltip);
     export default {
         name: 'MainPlayer',
         components: {
             SongsPlaylist, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
         },
-    data(){
-        return { playerVolume: 0, playerProgressPercent: 0, hidePlayer: false}
-    },
-    computed:{
-        ...mapState([
-            'Songs',
-            'presentSongId',
-            'lastSongId',
-            'isPlaying',
-            'audio',
-            'isPaused',
-            'timeBufferSecs',
-            'timeBufferMins',
-            'currentTrackTime',
-            'lastRecordedTrackTime',
-            'countCheck',
-            'currentTrackDuration',
-            'color',
-            'progressPercent',
-            'continuousPlay',
-            'timeLapse',
-            'volume'
-    ]),
-        ...mapGetters({getVolume: 'getVolume'})
-    },
-    watch: {
-        playerVolume () {
-            this.changeVolume({volume: this.playerVolume})
+        mixins: [PlayerMixin],
+        data(){
+            return { playerVolume: 0, playerProgressPercent: 0, hidePlayer: false}
         },
-        progressPercent(){
-            this.playerProgressPercent = this.progressPercent
-        },
-        timeLapse () {
-            // console.log("detected timeLapse changes")
-            let xns = this
-            if (this.timeLapse) {
-                this.updateTimeLapse(false)
-                // console.log("calling updateTimeLapse")
-                // this.viewShit() // switched to action instead of here
-            }
-            if((this.currentTrackDuration === 'NaN : NaN') || ((this.progressPercent === 'NaN') || (this.progressPercent === 0) || !(this.progressPercent))){ // fix to displaying track time 'NaN : NaN' & timeBufferMins being stuck at 0
-                this.updateCountCheck({countCheck: 0})
-                this.viewShit()
-                setTimeout(()=>{
-                    if((this.progressPercent === 'NaN') || isNaN(this.progressPercent) || (this.progressPercent === 0) || !this.progressPercent){
-                        xns.updateAudioCurrentTime({currentTime: xns.audio.currentTime})
-                        xns.viewShit()
-                    }
-                }, 2000)
-            }
-        },
-        volume(){
-            this.playerVolume = this.volume
-        },
-        audio () {
-            this.currentTrackTime = parseInt(this.audio.currentTime);
-            this.lastRecordedTrackTime = -1
-            // console.log('changed Track')
-        }
-    },
-    mounted(){
-        let xns = this;
-        setTimeout(function () {
-            xns.updateLastSongId({lastSongId: xns.Songs.length - 1})
-            xns.playerVolume = xns.getVolume
-            xns.playerProgressPercent = xns.getProgresssPercent
-        }, 1000);
-    },
-    methods:{
-        scrubChange(){
-            this.scrubToTime(this.playerProgressPercent)
-        },
-        changeContinuousPlay(){
-            this.updateContinuousPlay({status: !this.continuousPlay})
-        },
-        ...mapActions([
-            'viewShit',
-            'playSong',
-            'play',
-            'nextSong',
-            'prevSong',
-            'stop',
-            'scrubToTime',
-            'updateTimeLapse'
+        computed:{
+            ...mapState([
+                'Songs',
+                'presentSongId',
+                'lastSongId',
+                'isPlaying',
+                'audio',
+                'isPaused',
+                'timeBufferSecs',
+                'timeBufferMins',
+                'currentTrackTime',
+                'lastRecordedTrackTime',
+                'countCheck',
+                'currentTrackDuration',
+                'color',
+                'progressPercent',
+                'continuousPlay',
+                'timeLapse',
+                'volume'
         ]),
-        ...mapMutations([
-            'changeVolume',
-            'updateCountCheck',
-            'updateAudioCurrentTime',
-            'updateLastSongId',
-            'changeAudioVolume',
-            'updateContinuousPlay'
-        ])
-    }
+            ...mapGetters({getVolume: 'getVolume'})
+        },
     }
 </script>
 
 <style scopped>
-  /*Track Scrobbing*/
   .track-scrubbing > div{
     padding: 0 !important;
   }

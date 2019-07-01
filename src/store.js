@@ -52,7 +52,6 @@ export default new Vuex.Store({
   		state.audio.volume = state.volume
   	},
   	updateTimeLapse(state, payload){
-		// console.log("timelapse is "+payload.timeLapse+" in mutation")
   		state.timeLapse = payload.timeLapse
   	},
   	updateCountCheck(state, payload){
@@ -106,7 +105,7 @@ export default new Vuex.Store({
             this.presentSongId -= 1;
             this.play(this.presentSongId, 'prev')
         } else {
-            // console.log('We\'ve arrived at the start of the playlist!')
+            // We\'ve arrived at the start of the playlist!
         }
         this.countCheck = 0;
         this.lastRecordedTrackTime = -1;
@@ -119,20 +118,18 @@ export default new Vuex.Store({
             state.isPaused = false;
             state.continuousPlay = false // halt continuous play
         } else {
-            console.log('Nothing Playing!')
+            // Nothing Playing!
         }
         state.countCheck = 1;
         state.lastRecordedTrackTime = -1;
         state.timeBufferMins = 0
     },
     scrubToTime(state, payload){
-    	// console.log("scrub percent received in mutation: "+payload.percent)
         state.audio.currentTime = (payload.percent * state.audio.duration) / 100;
     }
   },
   actions: {
     viewShit({ dispatch, commit, state }){
-    	// console.log("viewShit called")
     	setTimeout(() => {
             state.currentTrackTime = parseInt(state.audio.currentTime);
             state.progressPercent = (state.currentTrackTime / state.audio.duration) * 100;
@@ -172,7 +169,6 @@ export default new Vuex.Store({
         }, 1000)
     },
 	playSong({ dispatch, commit, state }, songId){
-		console.log(songId)
         state.presentSongId = songId;
         state.audio.src = state.Songs[songId].audio;
         state.audio.play();
@@ -199,7 +195,7 @@ export default new Vuex.Store({
 	            state.presentSongId = 0;
 					dispatch('play') // restart the playlist
 	            }
-	            console.log('We\'ve arrived at the end of the playlist!')
+	            // We\'ve arrived at the end of the playlist!
 	        }
 	        state.countCheck = 0;
 	        state.lastRecordedTrackTime = -1;
@@ -220,7 +216,7 @@ export default new Vuex.Store({
 	            state.presentSongId -= 1;
 	            dispatch('play','prev')
 	        } else {
-	            console.log('We\'ve arrived at the start of the playlist!')
+	            // We\'ve arrived at the start of the playlist!
 	        }
 	        state.countCheck = 0;
 	        state.lastRecordedTrackTime = -1;

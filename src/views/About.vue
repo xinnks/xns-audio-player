@@ -1,7 +1,7 @@
 <template>
-	<div class="columns">
-		<div class="column">
-			About Page
+	<div class="level">
+		<div class="level-item">
+			<h2>About Page</h2>
 		</div>
 	</div>
 </template>
