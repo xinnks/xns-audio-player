@@ -50,33 +50,4 @@
     height: 40px;
     width: auto;
   }
-  .play-control-item{
-    color: #ffffff;
-    cursor: pointer;
-  }
-  .continuous-play-on{
-    color: #21FB92;
-    margin-top: 4px;
-    cursor: pointer;
-  }
-  .continuous-play-off{
-    color: #fff;
-    margin-top: 4px;
-    cursor: pointer;
-  }
-  .volume-timer{
-    background: rgba(51, 51, 51, 0.85);
-  }
-  .volume-timer > div.level-right > div.timer{
-    padding-right: 5px;
-  }
-  .timer{
-    float: right;
-    font-size: large;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 1);
-  }
-  .volume{
-    float: left;
-  }
 </style>

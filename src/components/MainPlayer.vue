@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="level volume-timer">
-        <div class="level-left">
+        <div class="level-left volume-repeat">
           <vue-slider :width="150" :duration="0.1" :min="0" :max="1" v-model="playerVolume" :process="true" :interval="0.01"></vue-slider>
           <span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'is-small is-transparent continuous-play-on' : 'is-small is-transparent continuous-play-off'"><RefreshIcon/></span>
         </div>
@@ -146,8 +146,9 @@
   .volume-timer{
     background: rgba(51, 51, 51, 0.85);
   }
-  .volume-timer > div.level-right > div.timer{
+  .volume-timer{
     padding-right: 5px;
+    padding-left: 5px;
   }
   .list{
     border-radius: 0;
@@ -155,15 +156,16 @@
   .is-transparent{
     background-color: transparent !important;
   }
-  .continuous-play-on{
-    color: #21FB92;
+  .continuous-play-on, .continuous-play-off {
+    margin-left: 10px;
     margin-top: 4px;
     cursor: pointer;
   }
+  .continuous-play-on{
+    color: #21FB92;
+  }
   .continuous-play-off{
     color: #fff;
-    margin-top: 4px;
-    cursor: pointer;
   }
   .cover-overlay{
     background-color: rgba(0,0,0, .4);
