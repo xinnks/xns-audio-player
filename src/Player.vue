@@ -2,8 +2,8 @@
   <div class="section">
     <div class="container">
       <div class="level">
-        <div class="level-item">
-          <h3>XNS AUDIO PLAYER</h3>
+        <div class="level-item header-wrapper">
+          <h3 class="player-name">XNS AUDIO PLAYER</h3> <img src="./assets/logo.png" alt="logo" class="logo">
         </div>
       </div>
       &nbsp;
@@ -37,6 +37,18 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  .header-wrapper{
+    justify-content: center;
+    align-items: center
+  } 
+  .logo, .player-name{
+
+  }
+  .logo{
+    margin-left: 20px;
+    height: 40px;
+    width: auto;
   }
   .play-control-item{
     color: #ffffff;
