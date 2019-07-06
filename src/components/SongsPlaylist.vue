@@ -1,6 +1,6 @@
 <template>
-  <ol class="list">
-    <song-block :current-track-id="currentTrackId" class="list-item" v-for="(song, key) in Songs" :song="song" :count="key" :key="key" @playItem="$emit('playSelectSong',key)"></song-block>
+  <ol>
+    <song-block :current-track-id="currentTrackId" v-for="(song, key) in Songs" :song="song" :count="key" :key="key" @playItem="$emit('playSelectSong',key)"></song-block>
   </ol>
 </template>
 
@@ -14,7 +14,4 @@ export default {
 </script>
 
 <style scoped>
-  .align-left{
-    text-align: left;
-  }
 </style>

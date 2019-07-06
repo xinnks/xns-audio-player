@@ -1,16 +1,18 @@
 <template>
-  <div class="section">
+  <div class="flex mx-auto">
     <div class="container">
-      <div class="level">
-        <div class="level-item header-wrapper">
-          <h3 class="player-name">XNS AUDIO PLAYER</h3> <img src="./assets/logo.png" alt="logo" class="logo">
-        </div>
-      </div>
-      &nbsp;
-      <div class="level">
-          <div class="level-item">
-              <span><router-link to="/">Home</router-link></span> | <span><router-link to="/about">About</router-link></span>
+      <div class="flex flex-col items-center mt-4">
+        <div class="inline-flex flex-col items-center">
+          <div class="inline-flex flex-row">
+            <h3 class="player-name">XNS AUDIO PLAYER</h3>
+            <img src="./assets/logo.png" alt="logo" class="logo">
           </div>
+          <div class="inline-flex flex-row items-center align-middle mt-2">
+            <div><router-link to="/">Home</router-link></div>
+            <div class="mx-3">|</div>
+            <div><router-link to="/about">About</router-link></div>
+          </div>
+        </div>
       </div>
       <router-view/>
     </div>
@@ -41,7 +43,7 @@
   .header-wrapper{
     justify-content: center;
     align-items: center
-  } 
+  }
   .logo, .player-name{
 
   }
