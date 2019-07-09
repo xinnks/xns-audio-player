@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="flex-grow pt-0 pl-0 sm:pl-2 mt-2 sm:mt-0 ml-0 sm:ml-2">
-      <progress-bar bar-color="#333333" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>
+      <!--<progress-bar bar-color="#333333" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>-->
       <songs-playlist :current-track-id="presentSongId" @playSelectSong="playSong" :Songs="Songs"></songs-playlist>
     </div>
   </div>
@@ -48,7 +48,7 @@
     import SongsPlaylist from './../components/SongsPlaylist'
     import VueSlider from 'vue-slider-component'
     import { VCircle } from 'v-progress'
-    import ProgressBar from 'vue-simple-progress'
+    /*import ProgressBar from 'vue-simple-progress'*/
     import Vue from 'vue'
     import VTooltip from 'v-tooltip'
     import './../assets/tooltip.css'
@@ -63,7 +63,7 @@
     export default {
         name: 'MainPlayer',
         components: {
-            SongsPlaylist, VCircle, ProgressBar, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
+            SongsPlaylist, VCircle, /*ProgressBar,*/ RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
         },
         mixins: [PlayerMixin],
         data(){
