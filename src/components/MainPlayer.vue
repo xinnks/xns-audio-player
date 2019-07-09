@@ -1,9 +1,9 @@
 <template>
-  <div class="flex sm:flex-col sm:itema-center md:flex-row lg:flex-col xl:flex-row m-2 p-2">
-    <div class="p-0 m-0 h-cover shadow" :style="'background: url(' + Songs[presentSongId].cover + ');margin-top:12px;background-repeat: no-repeat;background-position:center;background-size: cover'">
+  <div class="flex flex-wrap sm:flex-no-wrap flex-col sm:flex-row xl:flex-row sm:items-start m-2 p-2">
+    <div class="flex-grow sm:flex-grow-0 md:flex-grow-0 lg:flex-grow-0 xl:flex-grow-0 p-0 m-0 max-h-cover shadow" :style="'background: url(' + Songs[presentSongId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
       <div class="relative shadow max-w-full play-controls">
         <div class="flex flex-col items-center p-0 m-0">
-          <div class="flex-grow h-auto w-full m-3 items-center align-middle mt-1 ml-3 mr-3 mb-3 p-2">
+          <div class="flex-grow h-full max-h-coverx w-full m-3 items-center align-middle mt-1 ml-3 mr-3 mb-3 p-2">
             <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>
           </div>
           <div class="inline-flex px-4 py-1 mb-2 align-middle justify-around pctrl rounded-full">
@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="flex-grow pt-0 pl-2 mt-3 ml-2">
+    <div class="flex-grow pt-0 pl-0 sm:pl-2 mt-2 sm:mt-0 ml-0 sm:ml-2">
       <progress-bar bar-color="#333333" size="tiny" :val="audio.currentTime" :max="!audio.duration ? 100 : audio.duration"></progress-bar>
       <songs-playlist :current-track-id="presentSongId" @playSelectSong="playSong" :Songs="Songs"></songs-playlist>
     </div>
@@ -95,26 +95,12 @@
 </script>
 
 <style scopped>
+  .vue-progress-circle{
+    width: fit-content !important;
+    width: -moz-fit-content !important;
+  }
   .track-scrubbing > div{
     padding: 0 !important;
-  }
-  .play-controls{
-    min-height: 360px;
-    background-size: cover;
-    background-repeat: no-repeat;
-  }
-  .play-controls > div.card-content {
-    margin-top: 10px;
-    padding-top: 5px;
-  }
-  .timer{
-    float: right;
-    font-size: large;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 1);
-  }
-  .volume{
-    float: left;
   }
   .pctrl{
     background: rgba(51, 51, 51, 0.85);
@@ -131,13 +117,6 @@
   }
   .play-controls{
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
-  }
-  .volume-timer{
-    background: rgba(51, 51, 51, 0.85);
-  }
-  .volume-timer{
-    padding-right: 5px;
-    padding-left: 5px;
   }
   .list{
     border-radius: 0;
