@@ -8,17 +8,17 @@
           </div>
           <div class="inline-flex px-4 py-1 mb-2 align-middle justify-around pctrl rounded-full">
             <div class="mx-4">
-              <span @click="prevSong()"><SkipBackwardIcon class="play-control-item" w="30" h="30" /></span>
+              <span @click="prevSong()"><SkipBackwardIcon class="text-white cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
-              <span @click="play()"><PlayIcon class="play-control-item" v-show="!isPlaying" w="30" h="30"/></span>
-              <span @click="play()"><PauseIcon class="play-control-item" v-show="isPlaying" w="30" h="30" /></span>
+              <span @click="play()"><PlayIcon class="text-white cursor-pointer" v-show="!isPlaying" w="30" h="30"/></span>
+              <span @click="play()"><PauseIcon class="text-white cursor-pointer" v-show="isPlaying" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
-              <span @click="stop()"><SquareIcon class="play-control-item" w="30" h="30" /></span>
+              <span @click="stop()"><SquareIcon class="text-white cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
-              <span @click="nextSong()"><SkipForwardIcon class="play-control-item" w="30" h="30" /></span>
+              <span @click="nextSong()"><SkipForwardIcon class="text-white cursor-pointer" w="30" h="30" /></span>
             </div>
           </div>
           <div class="flex-grow track-scrubbing mx-5 pctrl">
@@ -106,40 +106,8 @@
     background: rgba(51, 51, 51, 0.85);
     border: solid 1px rgba(51, 51, 51, .4) ;
   }
-  .level.progress-window{
-    padding-top: 5px;
-    max-height: 200px;
-    margin: 50px;
-  }
-  .play-control-item{
-    color: #ffffff;
-    cursor: pointer;
-  }
   .play-controls{
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.4), rgba(255, 255, 255, 0.2));
-  }
-  .list{
-    border-radius: 0;
-  }
-  .is-transparent{
-    background-color: transparent !important;
-  }
-  .continuous-play-on, .continuous-play-off {
-    margin-left: 10px;
-    margin-top: 4px;
-    cursor: pointer;
-  }
-  .continuous-play-on{
-    color: #21FB92;
-  }
-  .continuous-play-off{
-    color: #fff;
-  }
-  .cover-overlay{
-    background-color: rgba(0,0,0, .4);
-    padding: 0 !important;
-    margin: 0 !important;
-    max-height: 496px;
   }
   h3{
     font-size: 24px;
