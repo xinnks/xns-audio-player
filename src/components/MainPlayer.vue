@@ -27,7 +27,7 @@
           <div class="inline-flex items-start px-2 mx-0 w-full align-middle justify-around pctrl">
             <div class="inline-flex items-center align-middle m-1">
               <vue-slider :width="120" :duration="0.1" :min="0" :max="1" v-model="playerVolume" :process="true" :interval="0.01"></vue-slider>
-              <span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'p-1 bg-transparent text-green-300' : 'p-1 bg-transparent text-white'"><RefreshIcon/></span>
+              <span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'p-1 bg-transparent text-primary-green' : 'p-1 bg-transparent text-white'"><RefreshIcon/></span>
             </div>
             <div class="p-2">
               <div class="text-sm text-white"> {{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>

@@ -1,42 +1,39 @@
 <template>
 	<div>
-		<span v-if="hidePlayer" @click="hidePlayer = false" class="player-reveal-button"><RevealIcon w="40" h="40" /></span>
-		<div :class="hidePlayer ? 'columns pp hide' : 'columns pp'" :style="'background-image:url('+Songs[presentSongId].cover+')'">
-			<span v-if="!hidePlayer" @click="hidePlayer = true" class="player-hide-button"><CloseIcon w="30" h="30" /></span>
-			<div class="column is-3 pp-controls">
-				<div class="columns is-multiline">
-					<div class="column is-12 controls-window">
-	                  	<div class="columns is-mobile">
-		                    <div class="column">
-		                      <span @click="prevSong()"><SkipBackwardIcon class="play-control-item" w="30" h="30" /></span>
-		                    </div>
-		                    <div class="column">
-		                      <span @click="play()"><PlayIcon class="play-control-item" v-show="!isPlaying" w="30" h="30"/></span>
-		                      <span @click="play()"><PauseIcon class="play-control-item" v-show="isPlaying" w="30" h="30" /></span>
-		                    </div>
-		                    <div class="column">
-		                      <span @click="stop()"><SquareIcon class="play-control-item" w="30" h="30" /></span>
-		                    </div>
-		                    <div class="column">
-		                      <span @click="nextSong()"><SkipForwardIcon class="play-control-item" w="30" h="30"/></span>
-		                    </div>
-	                  	</div>
+		<span v-if="hidePlayer" @click="hidePlayer = false" class="player-reveal-button cursor-pointer fixed right-0 bottom-0
+h-10 w-10"><RevealIcon w="40" h="40" /></span>
+		<div :class="hidePlayer ? 'flex flex-row flex-wrap md:flex-no-wrap lg:flex-no-wrap xl:flex-no-wrap fixed bottom-0 left-0 right-0 z-20 min-h-10 persplayrmaxheightsm sm:max-h-persplayrmaxheight md:max-h-persplayrmaxheight lg:max-h-persplayrmaxheight lg:max-h-persplayrmaxheight min-h-persplayrminheight py-0 px-0 mt-0 mr-3 mb-0 ml-0 bg-no-repeat bg-center bg-cover hidden pp' : 'flex flex-row flex-wrap md:flex-no-wrap lg:flex-no-wrap xl:flex-no-wrap fixed bottom-0 left-0 right-0 z-20 min-h-10 persplayrmaxheightsm sm:max-h-persplayrmaxheight md:max-h-persplayrmaxheight lg:max-h-persplayrmaxheight lg:max-h-persplayrmaxheight min-h-persplayrminheight py-0 px-0 mt-0 mr-3 mb-0 ml-0 bg-no-repeat bg-center bg-cover pp'" :style="'background-image:url('+Songs[presentSongId].cover+'); background-repeat: no-repeat; background-position: center; background-size: cover'">
+			<span v-if="!hidePlayer" @click="hidePlayer = true" class="player-hide-button absolute cursor-pointer right-0 top-0 h-10 w-10 z-30"><CloseIcon w="30" h="30" /></span>
+			<div class="flex-grow-0 p-2 m-0 w-full md:w-1/3 lg:w-1/4 xl:w-1/5 pp-controls">
+				<div class="inline-flex flex-col items-center w-full">
+					<div class="inline-flex flex-row w-full items-center align-middle justify-around px-4 py-1">
+						<div class="flex-1 m-1 justify-center align-middle" @click="prevSong()">
+							<SkipBackwardIcon class="cursor-pointer text-white" w="30" h="30" />
+						</div>
+						<div class="flex-1 m-1 justify-center align-middle" @click="play()">
+							<PlayIcon class="cursor-pointer text-white" v-show="!isPlaying" w="30" h="30"/>
+							<PauseIcon class="cursor-pointer text-white" v-show="isPlaying" w="30" h="30" />
+						</div>
+						<div class="flex-1 m-1 justify-center align-middle" @click="stop()">
+							<SquareIcon class="cursor-pointer text-white" w="30" h="30" />
+						</div>
+						<div class="flex-1 m-1 justify-center align-middle" @click="nextSong()">
+							<SkipForwardIcon class="cursor-pointer text-white" w="30" h="30"/>
+						</div>
 		          	</div>
-		          	<div class="column is-12 pp-volume-repeat">
-		          		<div class="columns is-mobile">
-		          			<div class="column is-8 volume">
-				              	<vue-slider :width="150" :duration="0.1" :min="0" :max="1" v-model="playerVolume" :process="true" :interval="0.01"></vue-slider>
-			                </div>
-			          		<div class="column is-3">
-				              	<span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'is-small is-transparent continuous-play-on is-pulled-right' : 'is-small is-transparent continuous-play-off is-pulled-right'"><RefreshIcon w="30" h="30"/></span>
-			                </div>
-		          		</div>
+		          	<div class="inline-flex flex-row w-full items-center justify-between px-4 py-1">
+						<div class="flex-1 w-3/4">
+							<vue-slider :width="150" :duration="0.1" :min="0" :max="1" v-model="playerVolume" :process="true" :interval="0.01"></vue-slider>
+						</div>
+						<div class="flex-1 w-1/4">
+							<span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'bg-transparent float-right text-white text-primary-green' : 'bg-transparent float-right text-white text-white'"><RefreshIcon w="30" h="30"/></span>
+						</div>
 		            </div>
 				</div>
 			</div>
-			<div class="column is-9 playing-progress">
+			<div class="flex-grow w-full md:w-2/3 lg:w-3/4 xl:w-4/5 playing-progress m-0 px-3 sm:p-12 h-16 sm:h-auto md:h-full lg:h-full xl:h-full">
 				<vue-slider @change="scrubChange()" v-model="playerProgressPercent" :process="true" :interval="0.01"></vue-slider>
-				<div class="timer"> {{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>
+				<div class="float-right text-2xl text-sm sm:text-lg font-bold text-white"> {{timeBufferMins}} : {{timeBufferSecs | doubleDigits}} - {{currentTrackDuration}}</div>
 			</div>
 		</div>
 	</div>
@@ -94,64 +91,21 @@ export default {
 
 <style scoped>
 	.pp{
-		display: block;
-		position: fixed;
-	    bottom: 0;
-	    left: 0;
-	    right: 0;
-	    z-index: 9999;
-	    min-height: 50px;
-	    max-height: 120px;
-	    padding: 0 3;
-	    margin:  0 5px 5px 0px;
-	    background-repeat: no-repeat !important;
-	    background-position: center !important;
-	    background-size: cover !important;
-	    background: #485563;
-		background: -webkit-linear-gradient(to right, rgba(72, 85, 99, .8), rgba(41, 50, 60, .8));
-		background: linear-gradient(to right, rgba(72, 85, 99, .8), rgba(41, 50, 60, .8));
-	}
-	.pp.hide{
-		display: none;
+		background: #232526;
+		background: -webkit-linear-gradient(to right, rgba(35, 37, 38, .8), rgba(65, 67, 69, .8));
+		background: linear-gradient(to right, rgba(35, 37, 38, .8), rgba(65, 67, 69, .8));
 	}
 	.pp-controls{
-		cursor: pointer;
-		margin: 0;
-		padding: 10px 30px 5px 30px;
-		background: #232526;
-		background: -webkit-linear-gradient(to right, rgba(35, 37, 38, .9), rgba(65, 67, 69, .9));
-		background: linear-gradient(to right, rgba(35, 37, 38, .9), rgba(65, 67, 69, .9));
+		background: #303942;
+		background: -webkit-linear-gradient(to right, rgba(43, 51, 59, 0.95), rgba(41, 50, 60, .95));
+		background: linear-gradient(to right, rgba(43, 51, 59, 0.95), rgba(41, 50, 60, .95));
 	}
 	.playing-progress{
-		cursor: pointer;
-		margin: 0;
-		padding: 40px 40px;
 		background: #000000;
 		background: -webkit-linear-gradient(to right, rgba(0,0,0,.6), rgba(67,67,67,.6));
 		background: linear-gradient(to right, rgba(0,0,0,.6), rgba(67,67,67,.6));
 	}
-	.volume{
-		padding-top: 23px;
-	}
-	.pp-volume-repeat{
-		padding-top: 5px;
-	}
-	.player-hide-button{
-		cursor: pointer;
-		position: absolute;
-		right: 0;
-		top: 0;
-		height: 40px;
-		width: 40px;
-		z-index: 999999;
-	}
 	.player-reveal-button{
-		cursor: pointer;
-		position: fixed;
-		right: 20px;
-		bottom: 0;
-		height: 40px;
-		width: 40px;
 		border-top-right-radius: 20px;
 		border-top-left-radius: 20px;
 		background: #36d1dc;

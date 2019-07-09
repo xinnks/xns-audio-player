@@ -8,15 +8,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
 	Songs: [
-                { audio: 'https://rorg.z1.fm/d/3f/ti_ft_eminem_-_thats_all_she_wrote_(zv.fm).mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189593/random/f55abc725080eb05147e45ce3cd406a8.1000x1000x1.jpg' },
-                { audio: 'https://dll.z1.fm/music/8/e8/ellie_goulding_feat_diplo__swae_lee_-_close_to_me.mp3', artist: 'Ellie Goulding Feat. Diplo & Swae Lee', tittle: 'Close To Me', album: 'None', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189716/random/ellie-goulding-close-to-me-lg.jpg' },
-                { audio: 'https://rorg.z1.fm/8/ff/sia_-_lullaby_zaycevnet_(zv.fm).mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189786/random/t54664010-b708389188_s400.jpg' },
-                { audio: 'https://muz.z1.fm/6/6f/lp_-_muddy_waters_(zf.fm).mp3', artist: 'LP', tittle: 'Muddy Waters', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189837/random/t337772630-i1186767461_s400.jpg' },
-                { audio: 'https://rorg.z1.fm/f/d6/david_dallas_-_runnin_(zf.fm).mp3', artist: 'David Dallas', tittle: 'Runnin', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189882/random/t93555159-i1095888717_s400.jpg'},
-                { audio: 'https://jt2.z1.fm/f/bf/labrinth_-_vultures_(zvukoff.ru).mp3', artist: 'Labrinth', tittle: 'Vultures', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551189373/random/R-3512282-1392987047-7461.jpeg.jpg'},
-                { audio: 'https://muz17.z1.fm/b/10/niall_horan_-_slow_hands_slow_hands_(zf.fm).mp3', artist: 'Niall Horan', tittle: 'Slow Hands', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551190705/random/niall-horan-slow-hands-audio-02.jpg'},
-                { audio: 'https://muz.z1.fm/a/fa/davide_esposito_-_a_cavallo_del_vento_(zf.fm).mp3', artist: 'Davide Esposito', tittle: 'A Cavallo Del Vento', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551190889/random/500x500.jpg'},
-                { audio: 'https://dll.z1.fm/music/9/88/benny_blanco__halsey__khalid_-_eastside.mp3', artist: 'Benny Blanco, Halsey & Khalid', tittle: 'Eastside', album: '', cover: 'https://res.cloudinary.com/djx5h4cjt/image/upload/v1551192768/random/artworks-000432419499-7ts3gr-t500x500.jpg'}
+        { audio: 'http://127.0.0.1:8000/storage/audio/77V_11YC8R147T45X1Z5X84PNMAC6Z.mp3', artist: 'Sia', tittle: 'Lullaby', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
+        { audio: 'http://127.0.0.1:8000/storage/audio/CCP84EMP61920RGI76Y5TXJKSXT04F.mp3', artist: 'T.I', tittle: 'That\'s All She Wrote (ft. Eminem)', album: '', cover: 'http://127.0.0.1:8000/storage/photos/default.jpg' },
+        { audio: 'http://127.0.0.1:8000/storage/audio/14AIFFI1PA_6EJ-FLT89JY00T9V89_.mp3', artist: 'LP', tittle: 'Muddy Waters [Live Session]', album: '', cover: 'http://127.0.0.1:8000/storage/photos/SDBPOQCA67XGHGGFMD58.jpg' },
+        { audio: 'http://127.0.0.1:8000/storage/audio/LS54Q088NZT5AW14W20CE751262H2F.mp3', artist: 'Kai Honasan', tittle: 'Ngayong Gabi', album: 'In Your Face And Songs About Other Faces', cover: 'http://127.0.0.1:8000/storage/photos/Y584C_68A030RW5_TBZ5.jpg' }
         ],
     presentSongId: 0,
     lastSongId: 0,
