@@ -3,7 +3,7 @@
     <div class="flex-grow sm:flex-grow-0 md:flex-grow-0 lg:flex-grow-0 xl:flex-grow-0 p-0 m-0 max-h-cover shadow" :style="'background: url(' + Songs[presentSongId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
       <div class="relative shadow max-w-full play-controls">
         <div class="flex flex-col items-center p-0 m-0">
-          <div class="flex-grow h-full max-h-coverx w-full m-3 items-center align-middle mt-1 ml-3 mr-3 mb-3 p-2">
+          <div class="flex-grow h-full max-h-coverx w-full m-3 items-center align-middle mt-1 mx-auto mb-3 p-2">
             <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>
           </div>
           <div class="inline-flex px-4 py-1 mb-2 align-middle justify-around pctrl rounded-full">
@@ -11,8 +11,9 @@
               <span @click="prevSong()"><SkipBackwardIcon class="text-white cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
-              <span @click="play()"><PlayIcon class="text-white cursor-pointer" v-show="!isPlaying" w="30" h="30"/></span>
-              <span @click="play()"><PauseIcon class="text-white cursor-pointer" v-show="isPlaying" w="30" h="30" /></span>
+              <span @click="play()"><PlayIcon class="text-white cursor-pointer" v-show="!isPlaying && !playerIsBuffering" w="30" h="30"/></span>
+              <span @click="play()"><PauseIcon class="text-white cursor-pointer" v-show="isPlaying && !playerIsBuffering" w="30" h="30" /></span>
+              <span><BufferingIcon class="text-white cursor-pointer" animate="rotate" v-show="playerIsBuffering" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
               <span @click="stop()"><SquareIcon class="text-white cursor-pointer" w="30" h="30" /></span>
@@ -58,12 +59,13 @@
     import PauseIcon from 'vue-ionicons/dist/md-pause'
     import SquareIcon from 'vue-ionicons/dist/md-square'
     import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward'
+    import BufferingIcon from 'vue-ionicons/dist/md-refresh'
     import PlayerMixin from './../mixins/PlayerMixin'
     Vue.use(VTooltip);
     export default {
         name: 'MainPlayer',
         components: {
-            SongsPlaylist, VCircle, /*ProgressBar,*/ RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider
+            SongsPlaylist, VCircle, /*ProgressBar,*/ RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, BufferingIcon
         },
         mixins: [PlayerMixin],
         data(){
@@ -87,7 +89,8 @@
                 'progressPercent',
                 'continuousPlay',
                 'timeLapse',
-                'volume'
+                'volume',
+                'playerIsBuffering'
         ]),
             ...mapGetters({getVolume: 'getVolume'})
         },

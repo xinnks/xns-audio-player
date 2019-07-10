@@ -11,8 +11,9 @@ h-10 w-10"><RevealIcon w="40" h="40" /></span>
 							<SkipBackwardIcon class="cursor-pointer text-white" w="30" h="30" />
 						</div>
 						<div class="flex-1 m-1 justify-center align-middle" @click="play()">
-							<PlayIcon class="cursor-pointer text-white" v-show="!isPlaying" w="30" h="30"/>
-							<PauseIcon class="cursor-pointer text-white" v-show="isPlaying" w="30" h="30" />
+							<PlayIcon class="cursor-pointer text-white" v-show="!isPlaying && !playerIsBuffering" w="30" h="30"/>
+							<PauseIcon class="cursor-pointer text-white" v-show="isPlaying && !playerIsBuffering" w="30" h="30" />
+							<BufferingIcon class="text-white cursor-pointer" animate="rotate" v-show="playerIsBuffering" w="30" h="30" />
 						</div>
 						<div class="flex-1 m-1 justify-center align-middle" @click="stop()">
 							<SquareIcon class="cursor-pointer text-white" w="30" h="30" />
@@ -53,12 +54,13 @@ import SquareIcon from 'vue-ionicons/dist/ios-square'
 import SkipForwardIcon from 'vue-ionicons/dist/ios-skip-forward'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle.vue'
 import RevealIcon from 'vue-ionicons/dist/ios-arrow-up.vue'
+import BufferingIcon from 'vue-ionicons/dist/ios-refresh-circle'
 import PlayerMixin from './../mixins/PlayerMixin'
 Vue.use(VTooltip);
 export default {
   	name: 'PersistentPlayer',
 	components: {
-	    RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon, VTooltip
+	    RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon, VTooltip, BufferingIcon
 	},
 	mixins: [PlayerMixin],
 	data(){
@@ -82,7 +84,8 @@ export default {
 			'progressPercent',
 			'continuousPlay',
 			'timeLapse',
-			'volume'
+			'volume',
+          	'playerIsBuffering'
 	]),
 		...mapGetters({getVolume: 'getVolume'})
 	},

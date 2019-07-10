@@ -7,7 +7,11 @@ require('./assets/style.scss')
 Vue.config.productionTip = false
 
 Vue.filter('doubleDigits', function (val) {
+  if(isNaN(val)){
+    return '00'
+  }else{
     return val < 10 ? '0' + val : val
+  }
 })
 
 new Vue({
