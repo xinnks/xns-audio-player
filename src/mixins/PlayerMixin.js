@@ -8,20 +8,12 @@ import {mapActions, mapMutations } from 'vuex'
         this.playerProgressPercent = this.progressPercent
       },
     timeLapse () {
-      let xns = this
       if (this.timeLapse) {
         this.updateTimeLapse(false)
       }
       if((this.currentTrackDuration === 'NaN : NaN') || ((this.progressPercent === 'NaN') || (this.progressPercent === 0) || !(this.progressPercent))){ // fix to displaying track time 'NaN : NaN' & timeBufferMins being stuck at 0
         this.updateCountCheck({countCheck: 0})
           this.viewShit()
-        // not needed since currentTime is modified when the track starts playing syncronously
-          /*setTimeout(()=>{
-              if((this.progressPercent === 'NaN') || isNaN(this.progressPercent) || (this.progressPercent === 0) || !this.progressPercent){
-                  xns.updateAudioCurrentTime({currentTime: xns.audio.currentTime})
-                  xns.viewShit()
-              }
-          }, 2000)*/
         }
       },
       volume(){

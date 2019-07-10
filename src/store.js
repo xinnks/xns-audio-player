@@ -83,7 +83,7 @@ export default new Vuex.Store({
             state.playerIsBuffering = false // enough media to begin playback
           })
           state.audio.addEventListener('playing', () => {
-            console.log('Audio has started playing')
+            // Audio has started playing
             state.countCheck = 0;
             state.lastRecordedTrackTime = -1;
             state.timeBufferMins = 0;
@@ -109,7 +109,7 @@ export default new Vuex.Store({
             state.playerIsBuffering = false // enough media to begin playback
           })
           state.audio.addEventListener('playing', () => {
-            console.log('player has moved to '+payload.type+' song')
+            // player has moved to +payload.type+ song
             state.countCheck = 0;
             state.lastRecordedTrackTime = -1;
             state.timeBufferMins = 0;
@@ -128,7 +128,7 @@ export default new Vuex.Store({
             state.playerIsBuffering = false // enough media to begin playback
           })
           state.audio.addEventListener('playing', () => {
-            console.log('Audio has resumed playing')
+            // Audio has resumed playing
             state.countCheck = 0;
             state.lastRecordedTrackTime = -1;
             state.timeBufferMins = 0;
@@ -149,7 +149,7 @@ export default new Vuex.Store({
           state.playerIsBuffering = false // enough media to begin playback
         })
         state.audio.addEventListener('playing', () => {
-          console.log('Audio has started playing for the first time')
+          // Audio has started playing for the first time
           state.countCheck = 0;
           state.lastRecordedTrackTime = -1;
           state.timeBufferMins = 0;
@@ -241,7 +241,7 @@ export default new Vuex.Store({
         state.playerIsBuffering = false // enough media to begin playback
       })
       state.audio.addEventListener('playing', () => {
-        console.log('Selected song has started playing')
+        // Selected song has started playing
         state.countCheck = 0;
         state.lastRecordedTrackTime = -1;
         state.timeBufferMins = 0;

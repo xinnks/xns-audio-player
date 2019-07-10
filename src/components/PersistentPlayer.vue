@@ -21,15 +21,15 @@ h-10 w-10"><RevealIcon w="40" h="40" /></span>
 						<div class="flex-1 m-1 justify-center align-middle" @click="nextSong()">
 							<SkipForwardIcon class="cursor-pointer text-white" w="30" h="30"/>
 						</div>
-		          	</div>
-		          	<div class="inline-flex flex-row w-full items-center justify-between px-4 py-1">
+					</div>
+					<div class="inline-flex flex-row w-full items-center justify-between px-4 py-1">
 						<div class="flex-1 w-3/4">
 							<vue-slider :width="150" :duration="0.1" :min="0" :max="1" v-model="playerVolume" :process="true" :interval="0.01"></vue-slider>
 						</div>
 						<div class="flex-1 w-1/4">
 							<span v-tooltip.top-center="continuousPlay ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay()" :class="continuousPlay ? 'bg-transparent float-right text-white text-primary-green' : 'bg-transparent float-right text-white text-white'"><RefreshIcon w="30" h="30"/></span>
 						</div>
-		            </div>
+					</div>
 				</div>
 			</div>
 			<div class="flex-grow w-full md:w-2/3 lg:w-3/4 xl:w-4/5 playing-progress m-0 px-3 sm:p-12 h-16 sm:h-auto md:h-full lg:h-full xl:h-full">
@@ -58,9 +58,9 @@ import BufferingIcon from 'vue-ionicons/dist/ios-refresh-circle'
 import PlayerMixin from './../mixins/PlayerMixin'
 Vue.use(VTooltip);
 export default {
-  	name: 'PersistentPlayer',
+	name: 'PersistentPlayer',
 	components: {
-	    RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon, VTooltip, BufferingIcon
+		RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, VueSlider, CloseIcon, RevealIcon, BufferingIcon
 	},
 	mixins: [PlayerMixin],
 	data(){
@@ -85,7 +85,7 @@ export default {
 			'continuousPlay',
 			'timeLapse',
 			'volume',
-          	'playerIsBuffering'
+			'playerIsBuffering'
 	]),
 		...mapGetters({getVolume: 'getVolume'})
 	},
