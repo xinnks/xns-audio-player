@@ -1,15 +1,15 @@
 <template>
-  <div class="flex mx-auto">
-    <div class="container">
-      <div class="flex flex-col items-center mt-4">
-        <div class="inline-flex flex-col items-center">
-          <div class="inline-flex flex-row">
+  <div class="tw-flex tw-mx-auto">
+    <div class="tw-container">
+      <div class="tw-flex tw-flex-col tw-items-center tw-mt-4">
+        <div class="tw-inline-flex tw-flex-col tw-items-center">
+          <div class="tw-inline-flex tw-flex-row">
             <h3 class="player-name">XNS AUDIO PLAYER</h3>
             <img src="./assets/logo.png" alt="logo" class="logo">
           </div>
-          <div class="inline-flex flex-row items-center align-middle mt-2">
+          <div class="tw-inline-flex tw-flex-row tw-items-center tw-align-middle tw-mt-2">
             <div><router-link to="/">Home</router-link></div>
-            <div class="mx-3">|</div>
+            <div class="tw-mx-3">|</div>
             <div><router-link to="/about">About</router-link></div>
           </div>
         </div>
@@ -33,16 +33,16 @@
 <style>
 
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    tw-font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-tw-font-smoothing: tw-antialiased;
+    -motw-z-osx-tw-font-smoothing: grayscale;
+    tw-text-align: center;
     color: #2c3e50;
     margin-top: 60px;
   }
   .header-wrapper{
-    justify-content: center;
-    align-items: center
+    tw-justify-content: center;
+    tw-align-items: center
   }
   .logo, .player-name{
 
