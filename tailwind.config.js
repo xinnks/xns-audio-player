@@ -13,7 +13,7 @@ module.exports = {
     },
     maxHeight: {
       'persplayrmaxheight': '100px',
-      'persplayrmaxheightsm': '110px',
+      'persplayrmaxheightsm': '120px',
       'persplayrminheight': '50px',
       cover: '430px',
       coverx: '320px',

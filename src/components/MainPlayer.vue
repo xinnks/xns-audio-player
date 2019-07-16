@@ -6,7 +6,7 @@
           <div class="tw-flex-grow tw-h-full tw-max-h-coverx tw-w-full tw-m-3 tw-items-center tw-align-middle tw-mt-1 tw-mx-auto tw-mb-3 tw-p-2">
             <v-circle :percent="progressPercent" stroke-width="6" stroke-linecap="round" :strokeColor="color"/>
           </div>
-          <div class="tw-inline-flex tw-px-4 tw-py-1 tw-mb-2 tw-align-middle tw-justify-around pctrl rounded-full">
+          <div class="tw-inline-flex tw-px-4 tw-py-1 tw-mb-2 tw-align-middle tw-justify-around pctrl tw-rounded-full">
             <div class="tw-mx-4">
               <span @click="prevSong()"><SkipBackwardIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
             </div>
