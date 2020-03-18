@@ -50,9 +50,7 @@
 </template>
 
 <script>
-/* eslint-disable */
     import SongsPlaylist from './../components/SongsPlaylist'
-    import VueSlider from 'vue-slider-component'
     import { VCircle } from 'v-progress'
     import XnsSeekBar from 'xns-seek-bar'
     import Vue from 'vue'
@@ -69,11 +67,11 @@
     Vue.use(VTooltip);
     Vue.use(XnsSeekBar)
     export default {
-        name: 'MainPlayer',
-        components: {
-            SongsPlaylist, VCircle, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, BufferingIcon
-        },
-        mixins: [PlayerMixin]
+      name: 'MainPlayer',
+      components: {
+        SongsPlaylist, VCircle, RefreshIcon,SkipBackwardIcon, PlayIcon, PauseIcon, SquareIcon, SkipForwardIcon, BufferingIcon
+      },
+      mixins: [PlayerMixin]
     }
 </script>
 

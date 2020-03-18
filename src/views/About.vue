@@ -4,6 +4,7 @@
 			<h2>About Page</h2>
 			<div class="illustration" >
 				<img src="/img/pluto-page-under-construction.png" alt="">
+        Illustration by <a target="_blank" href="http://www.saramaese.com">Sara Maese</a>
 			</div>
 		</div>
 	</div>

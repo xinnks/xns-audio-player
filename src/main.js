@@ -28,8 +28,6 @@ Vue.filter('secsToMinutes', function (val) {
   }
 })
 
-/* eslint-disable */
-
 new Vue({
   store,
   router,

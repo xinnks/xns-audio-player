@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import MainPlayer from './../components/MainPlayer'
+  import MainPlayer from './../components/MainPlayer'
 	export default {
 		name: 'HomePage',
 		components: {MainPlayer}
