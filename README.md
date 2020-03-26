@@ -1,6 +1,6 @@
 # xns-audio-player
 
-> A simple customizable audio player powered by vue and some visuals from [tailwindcss](https://github.com/tailwindcss/tailwindcss), [v-tooltip](https://github.com/Akryum/v-tooltip), [v-progress](https://github.com/MissHoya/v-progress), [vue-ionicons](https://mazipan.github.io/vue-ionicons) & [xns-seek-bar](https://github.com/xinnks/xns-seek-bar)
+> A persistent audio player powered by vue and some visuals from [tailwindcss](https://github.com/tailwindcss/tailwindcss), [v-tooltip](https://github.com/Akryum/v-tooltip), [v-progress](https://github.com/MissHoya/v-progress), [vue-ionicons](https://mazipan.github.io/vue-ionicons) & [xns-seek-bar](https://github.com/xinnks/xns-seek-bar)
 
 ## [Demo](https://xns-audio-player.netlify.com/ "Demo")
 
