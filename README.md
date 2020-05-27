@@ -6,6 +6,10 @@
 
 ![xns-audio-player](https://res.cloudinary.com/djx5h4cjt/image/upload/q_50/v1584544058/xns-audio-player/xns-audio-player-update.gif)
 
+
+[![Buy Me A Coffee](https://cdn.buymeacoffee.com/buttons/default-orange.png)](https://www.buymeacoffee.com/Xinnks)
+
+
 ## Project setup
 ```
 npm install
