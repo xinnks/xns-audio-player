@@ -1,6 +1,6 @@
 <template>
   <ol>
-    <song-block v-for="(song, key) in Songs" :song="song" :count="key" :key="key" @playItem="$emit('playSelectSong',key)"></song-block>
+    <song-block v-for="(song, key) in Songs" :song="song" :count="key" :key="key" @play-item="$emit('play-select-song',key)"></song-block>
   </ol>
 </template>
 

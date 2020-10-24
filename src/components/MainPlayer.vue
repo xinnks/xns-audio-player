@@ -44,7 +44,7 @@
       </div>
     </div>
     <div class="tw-flex-grow tw-pt-0 tw-pl-0 sm:tw-pl-2 tw-mt-2 sm:tw-mt-0 tw-ml-0 sm:tw-ml-2">
-      <songs-playlist :current-track-id="currentTrackId" @playSelectSong="playSelectedSong" :Songs="songs"></songs-playlist>
+      <songs-playlist :current-track-id="currentTrackId" @play-select-song="playSelectedSong" :Songs="songs"></songs-playlist>
     </div>
   </div>
 </template>
