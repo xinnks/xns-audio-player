@@ -82,6 +82,8 @@ export default new Vuex.Store({
         }
       }
     },
+    updateActivePlayer(state, payload){
+      state.activePlayer = {position: payload.playerPosition, ...state.players[payload.playerPosition]}
     },
     updateContinuousPlaybackStatus(state, payload){
       state.continuousPlaybackStatus = payload.status
