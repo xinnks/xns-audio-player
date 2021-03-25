@@ -16,7 +16,9 @@ const PlayerMixin = {
   },
   computed: {
     ...mapState([
-      'songs',
+      'playlists',
+      'activePlayer',
+      'activePlaylist',
       'volume',
       'isPlaying',
       'playerIsLoading',

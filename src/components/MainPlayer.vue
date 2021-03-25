@@ -1,6 +1,6 @@
 <template>
-  <div v-if="songs && (songs.length > 0)" class="tw-flex tw-flex-wrap sm:tw-flex-no-wrap tw-flex-col sm:tw-flex-row xl:tw-flex-row sm:tw-items-start tw-m-2 tw-p-2">
-    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow" :style="'background: url(' + songs[currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
+  <div v-if="activePlaylist && (activePlaylist.songs.length > 0)" class="tw-flex tw-flex-wrap sm:tw-flex-no-wrap tw-flex-col sm:tw-flex-row xl:tw-flex-row sm:tw-items-start tw-m-2 tw-p-2">
+    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow" :style="'background: url(' + activePlaylist.songs[activePlayer.currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
       <div class="tw-relative tw-shadow tw-max-w-full play-controls">
         <div class="tw-flex tw-flex-col tw-items-center tw-p-0 tw-m-0">
           <div class="tw-flex-grow tw-h-full tw-max-h-coverx tw-w-full tw-m-3 tw-items-center tw-align-middle tw-mt-1 tw-mx-auto tw-mb-3 tw-p-2">
@@ -43,8 +43,8 @@
         </div>
       </div>
     </div>
-    <div class="tw-flex-grow tw-pt-0 tw-pl-0 sm:tw-pl-2 tw-mt-2 sm:tw-mt-0 tw-ml-0 sm:tw-ml-2">
-      <songs-playlist :current-track-id="currentTrackId" @play-select-song="playSelectedSong" :Songs="songs"></songs-playlist>
+    <div class="tw-flex-grow tw-pt-0 tw-pl-0 sm:tw-pl-2 tw-mt-2 sm:tw-mt-0 tw-ml-0 sm:tw-ml-2" v-for="(playlist, key) in playlists" :key="key">
+      <songs-playlist :playlist-position="key" :current-track-id="getCurrentTrackId(key)" @play-select-song="playSelectedSong" :playlist="playlist"></songs-playlist>
     </div>
   </div>
 </template>
