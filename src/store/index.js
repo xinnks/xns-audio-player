@@ -86,59 +86,63 @@ export default new Vuex.Store({
       state.activePlayer = {position: payload.playerPosition, ...state.players[payload.playerPosition]}
     },
     updateContinuousPlaybackStatus(state, payload){
-      state.continuousPlaybackStatus = payload.status
+      state.players[payload.playerPosition].continuousPlaybackStatus = payload.status
     },
     updateCurrentTrackId(state, payload){
-      state.currentTrackId = payload.trackId
+      state.players[payload.playerPosition].currentTrackId = payload.trackId
     },
     updateCurrentTrackTime(state, payload){
-      state.currentTrackTime = payload.time
+      state.players[payload.playerPosition].currentTrackTime = payload.time
     },
     updateCurrentTrackDuration(state, payload){
-      state.currentTrackDuration = payload.time
+      state.players[payload.playerPosition].currentTrackDuration = payload.time || 0 // set duration to zero when trackTime is undefined(when track hasn't loaded)
     },
     updatePlayerVolume(state, payload){
       // Change volume
-      state.volume = payload.volume
-      state.audio.volume = payload.volume
+      state.players[payload.playerPosition].volume = payload.volume
+      state.players[payload.playerPosition].audio.volume = payload.volume
     },
     updatePlayerIsLoading(state, payload) {
-      state.playerIsLoading = payload.status
+      state.players[payload.playerPosition].playerIsLoading = payload.status
     },
     updatePlayerIsPlaying(state, payload) {
-      state.isPlaying = payload.status
+      state.players[payload.playerPosition].isPlaying = payload.status
     },
     updatePlayerIsPaused(state, payload) {
-      state.isPaused = payload.status
+      state.players[payload.playerPosition].isPaused = payload.status
     },
     updatePlayerIsStopped(state, payload) {
-      state.isStopped = payload.status
+      state.players[payload.playerPosition].isStopped = payload.status
     },
     playTrack(state, payload){
-      // if currentTrackTime is not 0, resume play
-      if((state.currentTrackTime !== 0) && state.isPaused){
-        state.audio.play()
+      // if currentTrackTime is not 0, and if in the same playlist resume play
+      if((state.players[payload.playerPosition].currentTrackTime !== 0) && state.players[payload.playerPosition].isPaused && (payload.playerPosition === state.activePlayer.position)){
+        state.players[payload.playerPosition].audio.play()
       } else {
         // abort current player progress
-        state.audio.load()
-        
-        state.playerIsLoading = true // show player loading animation on UI
+        state.players[payload.playerPosition].audio.load()
 
-        state.currentTrackId = payload.trackId === 0 || payload.trackId ? payload.trackId : state.currentTrackId // update current track id
-        state.audio.src = state.songs[state.currentTrackId].audio
-        state.audio.play() // play audio
+        state.players[payload.playerPosition].playerIsLoading = true // show player loading animation on UI
+
+        state.players[payload.playerPosition].currentTrackId = payload.trackId === 0 || payload.trackId ? payload.trackId : state.players[payload.playerPosition].currentTrackId // update current track id
+        state.players[payload.playerPosition].audio.src = state.playlists[payload.playerPosition].songs[state.players[payload.playerPosition].currentTrackId].audio
+        state.players[payload.playerPosition].audio.play() // play audio
       }
-      state.audio.volume = state.volume
+      state.players[payload.playerPosition].audio.volume = state.players[payload.playerPosition].volume
+
+      // update activePlaylist
+      state.activePlaylist = {position: payload.playerPosition, ...state.playlists[payload.playerPosition]}
+      state.activePlayer = {position: payload.playerPosition, ...state.players[payload.playerPosition]}
     },
-    pauseTrack(state){
-      state.audio.pause()
+    pauseTrack(state, payload){
+      state.players[payload.playerPosition].audio.pause()
     },
-    stopTrack(state){
-      state.audio.load()
+    stopTrack(state, payload){
+      state.players[payload.playerPosition].audio.load()
     },
     seekPlayer(state, payload){
       // seek to time
-      state.audio.currentTime = payload.time
+      state.players[payload.playerPosition].audio.currentTime = payload.time
     },
   },
 
