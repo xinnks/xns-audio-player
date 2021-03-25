@@ -44,7 +44,14 @@
       }
     },
     mounted(){
-      this.updatePlaylist(this.demoPlaylist)
+      this.addPlaylist({
+        title: 'Playlist 1',
+        songs: this.demoPlaylist
+      })
+      this.addPlaylist({
+        title: 'Playlist 2',
+        songs: this.demoPlaylist
+      })
     },
     methods: {
       ...mapActions(['addPlaylist'])
