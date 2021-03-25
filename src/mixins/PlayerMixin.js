@@ -16,7 +16,9 @@ const PlayerMixin = {
   },
   computed: {
     ...mapState([
-      'songs',
+      'playlists',
+      'activePlayer',
+      'activePlaylist',
       'volume',
       'isPlaying',
       'playerIsLoading',
@@ -33,19 +35,19 @@ const PlayerMixin = {
   methods: {
     emitCurrentSong(){
       setTimeout(()=>{
-        this.$emit('current-song', this.getSongs[this.getCurrentTrackId])
+        this.$emit('current-song', this.getSongs(this.activePlayer.position)[this.getCurrentTrackId(this.activePlayer.position)])
       }, 200)
     },
     playCurrentSong(){
-      this.playTrack()
+      this.playTrack({playerPosition: this.activePlayer.position, trackId: this.activePlayer.currentTrackId})
       setTimeout(() =>{
         this.audioListening()
         // emit new track
         this.emitCurrentSong()
       }, 200)
     },
-    playSelectedSong(trackId){
-      this.playTrack(trackId)
+    playSelectedSong(payload){
+      this.playTrack(payload || {playerPosition: this.activePlayer.position, trackId: this.activePlayer.currentTrackId})
       setTimeout(() =>{
         this.audioListening()
         // emit new track
@@ -54,16 +56,16 @@ const PlayerMixin = {
     },
     seekPlayer(time){
       this.audioListening(false) // stop listening to audio oject
-      this.seekToTime(time) // seek to given time
+      this.seekToTime({playerPosition: this.activePlayer.position, time: time}) // seek to given time
       setTimeout(() =>{
         this.audioListening() // resume listening to audio oject
       }, 10)
     },
     pauseSong(){
-      this.pause()
+      this.pause({playerPosition: this.activePlayer.position})
     },
     playNextSong(){
-      this.nextSong()
+      this.nextSong({playerPosition: this.activePlayer.position})
       this.audioListening(false)
       setTimeout(() =>{
         this.audioListening()
@@ -73,7 +75,7 @@ const PlayerMixin = {
     },
     playPrevSong(){
       this.audioListening(false)
-      this.prevSong()
+      this.prevSong({playerPosition: this.activePlayer.position, playlistPosition: this.activePlayer.position})
       setTimeout(() =>{
         this.audioListening()
         // emit new track
@@ -83,108 +85,122 @@ const PlayerMixin = {
     audioListening(listen = true){
       if(listen){
         // start listening
-        this.getAudio.addEventListener('loadeddata', this.proccessPlaybackStart, false)
-        this.getAudio.addEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
-        this.getAudio.addEventListener('pause', this.proccessPlaybackPause, false)
-        this.getAudio.addEventListener('emptied', this.proccessPlaybackEmptied, false)
-        this.getAudio.addEventListener('ended', this.proccessPlaybackStop, false)
+        this.getAudio(this.activePlayer.position).addEventListener('loadeddata', this.proccessPlaybackStart, false)
+        this.getAudio(this.activePlayer.position).addEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
+        this.getAudio(this.activePlayer.position).addEventListener('pause', this.proccessPlaybackPause, false)
+        this.getAudio(this.activePlayer.position).addEventListener('emptied', this.proccessPlaybackEmptied, false)
+        this.getAudio(this.activePlayer.position).addEventListener('ended', this.proccessPlaybackStop, false)
       } else {
         // stop listening
-        this.getAudio.removeEventListener('loadeddata', this.proccessPlaybackStart, false)
-        this.getAudio.removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
-        this.getAudio.removeEventListener('pause', this.proccessPlaybackPause, false)
-        this.getAudio.removeEventListener('emptied', this.proccessPlaybackEmptied, false)
-        this.getAudio.removeEventListener('ended', this.proccessPlaybackStop, false)
+        this.getAudio(this.activePlayer.position).removeEventListener('loadeddata', this.proccessPlaybackStart, false)
+        this.getAudio(this.activePlayer.position).removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
+        this.getAudio(this.activePlayer.position).removeEventListener('pause', this.proccessPlaybackPause, false)
+        this.getAudio(this.activePlayer.position).removeEventListener('emptied', this.proccessPlaybackEmptied, false)
+        this.getAudio(this.activePlayer.position).removeEventListener('ended', this.proccessPlaybackStop, false)
       }
     },
 
     // when first frame of media has finished loading
     proccessPlaybackStart() {
       // update UI
-      this.changePlayerIsLoading(false)
-      this.changePlayerIsPlaying(true)
-      this.changePlayerIsPaused(false)
-      this.changePlayerIsStopped(false)
+      this.changePlayerIsLoading({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsPlaying({playerPosition: this.activePlayer.position, status: true})
+      this.changePlayerIsPaused({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsStopped({playerPosition: this.activePlayer.position, status: false})
       
-      this.changeCurrentTrackDuration(this.getAudio.duration) // get track duration
+      this.changeCurrentTrackDuration(this.getAudio(this.activePlayer.position).duration) // get track duration
 
+      // update active player
+      this.updateActivePlayer({playerPosition: this.activePlayer.position})
     },
 
     // when time indicated by the currentTime attribute has been updated
     proccessPlaybackTimeUpdate() {
       // check if track duration is NaN or zero and rectify
-      if(isNaN(this.getCurrentTrackDuration) || !isFinite(this.getCurrentTrackDuration)){
-          this.changeCurrentTrackDuration(260) // give reasonable track duration
+      if(isNaN(this.getCurrentTrackDuration(this.activePlayer.position)) || !isFinite(this.getCurrentTrackDuration(this.activePlayer.position))){
+          this.changeCurrentTrackDuration({playerPosition: this.activePlayer.position, time: 260}) // give reasonable track duration
       }  else {
-          this.changeCurrentTrackDuration((isNaN(this.getAudio.duration) || !isFinite(this.getAudio.duration)) ? 260 : this.getAudio.duration) // get track duration
+          this.changeCurrentTrackDuration({playerPosition: this.activePlayer.position, time: (isNaN(this.getAudio(this.activePlayer.position).duration) || !isFinite(this.getAudio(this.activePlayer.position).duration)) ? 260 : this.getAudio(this.activePlayer.position).duration}) // get track duration
       }
       // debug loading
       if(this.getPlayerIsLoading){
-          this.changePlayerIsLoading(false)
+          this.changePlayerIsLoading({playerPosition: this.activePlayer.position, status: false})
       }
 
       // update UI
-      this.changeCurrentTrackTime(this.getAudio.currentTime) // get current track time
+      this.changeCurrentTrackTime({playerPosition: this.activePlayer.position, time: this.getAudio(this.activePlayer.position).currentTime}) // get current track time
 
-      this.changePlayerIsPlaying(true)
-      this.changePlayerIsPaused(false)
-      this.changePlayerIsStopped(false)
+      this.changePlayerIsPlaying({playerPosition: this.activePlayer.position, status: true})
+      this.changePlayerIsPaused({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsStopped({playerPosition: this.activePlayer.position, status: false})
+
+      // update active player
+      this.updateActivePlayer({playerPosition: this.activePlayer.position})
     },
 
     // called when element is paused
     proccessPlaybackPause() {
       // update UI
-      this.changePlayerIsPlaying(false)
-      this.changePlayerIsPaused(true)
-      this.changePlayerIsStopped(false)
+      this.changePlayerIsPlaying({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsPaused({playerPosition: this.activePlayer.position, status: true})
+      this.changePlayerIsStopped({playerPosition: this.activePlayer.position, status: false})
+
+      // update active player
+      this.updateActivePlayer({playerPosition: this.activePlayer.position})
     },
 
     // called when loaded() is called
     proccessPlaybackEmptied() {
       // kill all event listeners
-      this.getAudio.removeEventListener('loadeddata', this.proccessPlaybackStart, false)
-      this.getAudio.removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
-      this.getAudio.removeEventListener('pause', this.proccessPlaybackEmptied, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('loadeddata', this.proccessPlaybackStart, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('pause', this.proccessPlaybackEmptied, false)
       // update times
-      this.changeCurrentTrackTime(0)
-      this.changeCurrentTrackDuration(0)
+      this.changeCurrentTrackTime({playerPosition: this.activePlayer.position, time: 0})
+      this.changeCurrentTrackDuration({playerPosition: this.activePlayer.position, time: 0})
       
       // update UI
-      this.changePlayerIsPlaying(false)
-      this.changePlayerIsPaused(false)
-      this.changePlayerIsStopped(true)
+      this.changePlayerIsPlaying({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsPaused({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsStopped({playerPosition: this.activePlayer.position, status: true})
+
+      // update active player
+      this.updateActivePlayer({playerPosition: this.activePlayer.position})
     },
 
     // when playback stops at the end of the media
     proccessPlaybackStop() {
       // kill all event listeners
-      this.getAudio.removeEventListener('loadeddata', this.proccessPlaybackStart, false)
-      this.getAudio.removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
-      this.getAudio.removeEventListener('pause', this.proccessPlaybackPause, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('loadeddata', this.proccessPlaybackStart, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('timeupdate', this.proccessPlaybackTimeUpdate, false)
+      this.getAudio(this.activePlayer.position).removeEventListener('pause', this.proccessPlaybackPause, false)
       // update times
-      this.changeCurrentTrackTime(0)
-      this.changeCurrentTrackDuration(0)
+      this.changeCurrentTrackTime({playerPosition: this.activePlayer.position, time: 0})
+      this.changeCurrentTrackDuration({playerPosition: this.activePlayer.position, time: 0})
 
       // update UI
-      this.changePlayerIsPlaying(false)
-      this.changePlayerIsPaused(false)
-      this.changePlayerIsStopped(true)
+      this.changePlayerIsPlaying({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsPaused({playerPosition: this.activePlayer.position, status: false})
+      this.changePlayerIsStopped({playerPosition: this.activePlayer.position, status: true})
 
       // check if continuous playback is true
-      if(this.getContinuousPlaybackStatus){
+      if(this.getContinuousPlaybackStatus(this.activePlayer.position)){
         // check if there's a next track on the playlist
-        if((this.getCurrentTrackId + 1) <= (this.getSongsCount - 1)){
+        if((this.activePlayer.getCurrentTrackId + 1) <= (this.getSongsCount - 1)){
           // play next song
-          this.changePlayerIsLoading(true)  // show player loading animation on UI
-          this.changeCurrentTrackId(this.getCurrentTrackId + 1) // update current track id
+          this.changePlayerIsLoading({playerPosition: this.activePlayer.position, status: true})  // show player loading animation on UI
+          this.changeCurrentTrackId(this.activePlayer.getCurrentTrackId + 1) // update current track id
           this.playCurrentSong() // play audio
         } else {
           // play first track
-          this.changePlayerIsLoading(true)  // show player loading animation on UI
-          this.changeCurrentTrackId(0) // update current track id
+          this.changePlayerIsLoading({playerPosition: this.activePlayer.position, status: true})  // show player loading animation on UI
+          this.changeCurrentTrackId({playerPosition: this.activePlayer.position, time: 0}) // update current track id
           this.playCurrentSong() // play audio
         }
       }
+
+      // update active player
+      this.updateActivePlayer({playerPosition: this.activePlayer.position})
     },
     ...mapActions({
       updatePlaylist: 'updatePlaylist',
@@ -203,6 +219,7 @@ const PlayerMixin = {
       changeCurrentTrackId: 'changeCurrentTrackId',
       changeVolume: 'changeVolume',
       seekToTime: 'seek',
+      updateActivePlayer: 'updateActivePlayer'
     }),
   }
 }

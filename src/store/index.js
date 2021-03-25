@@ -6,212 +6,267 @@ export default new Vuex.Store({
   namespaced: false,
   state: {
     // audio tracks list
-    songs: [],
-    songsCount: 0,
-
-    //bools - playback helpers
-    isPlaying: false,
-    isPaused: false,
-    isStopped: false,
-    isFirstTrack: true,
-    isMuted: false,
-    playerIsLoading: false,
-    continuousPlaybackStatus: false,
+    playlists: [],
+    activePlaylist: {},
 
     // player element
-    audio: new Audio(),
-
-    // player properties
-    volume: 0.5,
-    buffered: 0,
-
-    // custom helper properties
-    currentTrackId: 0,
-    currentTrackTime: 0,
-    currentTrackDuration: 0,
+    players: [],
+    activePlayer: {},
+    playerObjectAnatomy: {
+      //bools - playback helpers
+      isPlaying: false,
+      isPaused: false,
+      isStopped: false,
+      isFirstTrack: true,
+      isMuted: false,
+      playerIsLoading: false,
+      continuousPlaybackStatus: false,
+      // player element
+      audio: new Audio(),
+      // player properties
+      volume: 0.5,
+      buffered: 0,
+      // custom helper properties
+      currentTrackId: 0,
+      currentTrackTime: 0,
+      currentTrackDuration: 0,
+    }
   },
 
   getters: {
-    getSongs: (state) => state.songs,
-    getSongsCount: (state) => state.songsCount,
-    getAudio: (state) => state.audio,
-    getVolume: (state) => state.volume,
-    getCurrentTrackId: (state) => state.currentTrackId,
-    getCurrentTrackTime: (state) => state.currentTrackTime,
-    getCurrentTrackDuration: (state) => state.currentTrackDuration,
-    getPlayerIsLoading: (state) => state.playerIsLoading,
-    getPlayerIsPlaying: (state) => state.isPlaying,
-    getPlayerIsPaused: (state) => state.isPaused,
-    getPlayerIsStopped: (state) => state.isStopped,
-    getContinuousPlaybackStatus: (state) => state.continuousPlaybackStatus,
+    getSongs: (state) => (playlistPosition) => state.playlists[playlistPosition].songs,
+    getSongsCount: (state) => (playlistPosition) => state.playlists[playlistPosition].count,
+    getAudio: (state) => (playerPosition) => state.players[playerPosition].audio,
+    getVolume: (state) => (playerPosition) => state.players[playerPosition].volume,
+    getCurrentTrackId: (state) => (playerPosition) => state.players[playerPosition].currentTrackId,
+    getCurrentTrackTime: (state) => (playerPosition) => state.players[playerPosition].currentTrackTime,
+    getCurrentTrackDuration: (state) => (playerPosition) => state.players[playerPosition].currentTrackDuration,
+    getPlayerIsLoading: (state) => (playerPosition) => state.players[playerPosition].playerIsLoading,
+    getPlayerIsPlaying: (state) => (playerPosition) => state.players[playerPosition].isPlaying,
+    getPlayerIsPaused: (state) => (playerPosition) => state.players[playerPosition].isPaused,
+    getPlayerIsStopped: (state) => (playerPosition) => state.players[playerPosition].isStopped,
+    getContinuousPlaybackStatus: (state) => (playerPosition) => state.players[playerPosition].continuousPlaybackStatus,
   },
 
   mutations: {
-    updateSongs(state, payload){
-      state.songs = payload.songs
-      state.songsCount = state.songs.length
+    updatePlaylistSongs(state, payload){
+      state.playlists[payload.playlistPosition].songs = payload.songs
+      state.playlists[payload.playlistPosition].count = state.playlists[payload.playlistPosition].songs.length
+    },
+    async addPlaylist(state, payload){ // {title, songs}
+      if(payload.songs){ // check if playlist to be added has songs
+        await state.playlists.push({
+          title: payload.title || `playlist ${state.playlists.length + 1}`,
+          songs: payload.songs,
+          count: payload.songs.length
+        })
+        // update player objects
+        await state.players.push(state.playerObjectAnatomy)
+
+        // add active player & playlist
+        state.activePlaylist = {position: 0, ...state.playlists[0]}
+        state.activePlayer = {position: 0, ...state.players[0]}
+      } else {
+        console.log("Playlist has no songs, you can not add an empty playlist")
+      }
+    },
+    removePlaylist(state, payload){
+      if(state.playlists.length > 0){ // check if at least one playlist exists
+        // if position is not specified remove the last added playlist
+        if(payload.playlistPosition !== undefined){
+          state.playlists.splice(payload.playlistPosition, 0)
+          state.players.splice(payload.playlistPosition, 0)
+        } else {
+          state.playlists.pop()
+          this.players.pop()
+        }
+      }
+    },
+    updateActivePlayer(state, payload){
+      state.activePlayer = {position: payload.playerPosition, ...state.players[payload.playerPosition]}
     },
     updateContinuousPlaybackStatus(state, payload){
-      state.continuousPlaybackStatus = payload.status
+      state.players[payload.playerPosition].continuousPlaybackStatus = payload.status
     },
     updateCurrentTrackId(state, payload){
-      state.currentTrackId = payload.trackId
+      state.players[payload.playerPosition].currentTrackId = payload.trackId
     },
     updateCurrentTrackTime(state, payload){
-      state.currentTrackTime = payload.time
+      state.players[payload.playerPosition].currentTrackTime = payload.time
     },
     updateCurrentTrackDuration(state, payload){
-      state.currentTrackDuration = payload.time
+      state.players[payload.playerPosition].currentTrackDuration = payload.time || 0 // set duration to zero when trackTime is undefined(when track hasn't loaded)
     },
     updatePlayerVolume(state, payload){
       // Change volume
-      state.volume = payload.volume
-      state.audio.volume = payload.volume
+      state.players[payload.playerPosition].volume = payload.volume
+      state.players[payload.playerPosition].audio.volume = payload.volume
     },
     updatePlayerIsLoading(state, payload) {
-      state.playerIsLoading = payload.status
+      state.players[payload.playerPosition].playerIsLoading = payload.status
     },
     updatePlayerIsPlaying(state, payload) {
-      state.isPlaying = payload.status
+      state.players[payload.playerPosition].isPlaying = payload.status
     },
     updatePlayerIsPaused(state, payload) {
-      state.isPaused = payload.status
+      state.players[payload.playerPosition].isPaused = payload.status
     },
     updatePlayerIsStopped(state, payload) {
-      state.isStopped = payload.status
+      state.players[payload.playerPosition].isStopped = payload.status
     },
     playTrack(state, payload){
-      // if currentTrackTime is not 0, resume play
-      if((state.currentTrackTime !== 0) && state.isPaused){
-        state.audio.play()
+      // if currentTrackTime is not 0, and if in the same playlist resume play
+      if((state.players[payload.playerPosition].currentTrackTime !== 0) && state.players[payload.playerPosition].isPaused && (payload.playerPosition === state.activePlayer.position)){
+        state.players[payload.playerPosition].audio.play()
       } else {
         // abort current player progress
-        state.audio.load()
-        
-        state.playerIsLoading = true // show player loading animation on UI
+        state.players[payload.playerPosition].audio.load()
 
-        state.currentTrackId = payload.trackId === 0 || payload.trackId ? payload.trackId : state.currentTrackId // update current track id
-        state.audio.src = state.songs[state.currentTrackId].audio
-        state.audio.play() // play audio
+        state.players[payload.playerPosition].playerIsLoading = true // show player loading animation on UI
+
+        state.players[payload.playerPosition].currentTrackId = payload.trackId === 0 || payload.trackId ? payload.trackId : state.players[payload.playerPosition].currentTrackId // update current track id
+        state.players[payload.playerPosition].audio.src = state.playlists[payload.playerPosition].songs[state.players[payload.playerPosition].currentTrackId].audio
+        state.players[payload.playerPosition].audio.play() // play audio
       }
-      state.audio.volume = state.volume
+      state.players[payload.playerPosition].audio.volume = state.players[payload.playerPosition].volume
+
+      // update activePlaylist
+      state.activePlaylist = {position: payload.playerPosition, ...state.playlists[payload.playerPosition]}
+      state.activePlayer = {position: payload.playerPosition, ...state.players[payload.playerPosition]}
     },
-    pauseTrack(state){
-      state.audio.pause()
+    pauseTrack(state, payload){
+      state.players[payload.playerPosition].audio.pause()
     },
-    stopTrack(state){
-      state.audio.load()
+    stopTrack(state, payload){
+      state.players[payload.playerPosition].audio.load()
     },
     seekPlayer(state, payload){
       // seek to time
-      state.audio.currentTime = payload.time
+      state.players[payload.playerPosition].audio.currentTime = payload.time
     },
   },
 
   actions: {
-    updatePlaylist({commit}, songs){
-      return commit('updateSongs',{songs: songs});
+    updatePlaylist({commit}, payload){
+      return commit('updatePlaylistSongs',{payload: payload});
     },
-    play({commit}, trackId = null){
-      return commit('playTrack',{trackId: trackId})
+    addPlaylist({commit}, payload){
+      return commit('addPlaylist', payload)
     },
-    pause({commit}){
+    play({commit}, payload){
+      return commit('playTrack', payload) // {playerPosition
+    },
+    pause({commit}, payload){
       return new Promise((resolve) => {
         setTimeout(() => {
-          commit('pauseTrack');
+          commit('pauseTrack', payload); // { playerPosition
           resolve()
         }, 10)
       })
     },
-    stop({commit}, trackId){
+    stop({state, commit}){
       return new Promise((resolve) => {
         setTimeout(() => {
-          commit('stopTrack',{trackId: trackId});
+          commit('stopTrack', {playerPosition: state.activePlayer.position}); // {playerPosition }
           resolve()
         }, 10)
       })
     },
-    seek({commit}, time){
-      return commit('seekPlayer',{time: time});
+    seek({state, commit, dispatch}, payload){
+      return dispatch('registerSeek', payload)
+        .then(() => {
+          commit('updateActivePlayer', {playerPosition: state.activePlayer.position})
+        })
     },
-    next({commit, state}){
+    registerSeek({commit}, payload){
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          commit('seekPlayer', payload); // {playerPosition, time}
+          resolve()
+        }, 10)
+      })
+    },
+    next({commit, state}, payload){ // {playerPosition}
       // check if there's a next track on the playlist
-      if((state.currentTrackId + 1) <= (state.songsCount - 1)){
+      if((state.players[payload.playerPosition].currentTrackId + 1) <= (state.playlists[payload.playerPosition].count - 1)){
         // play next song
-        commit('updateCurrentTrackId',{trackId: (state.currentTrackId + 1)})
+        commit('updateCurrentTrackId',{trackId: (state.players[payload.playerPosition].currentTrackId + 1), ...payload})
         setTimeout(() => {
-          commit('playTrack', {trackId: state.currentTrackId});
+          commit('playTrack', {trackId: state.players[payload.playerPosition].currentTrackId, ...payload});
         }, 10)
       } else {
         // check if continuous playback is true
         // TODO convert this, to repeat all check instead
-        if(state.continuousPlaybackStatus){
+        if(state.players[payload.playerPosition].continuousPlaybackStatus){
           // play first track
-          commit('updateCurrentTrackId',{trackId: 0})
+          commit('updateCurrentTrackId',{trackId: 0, ...payload})
           setTimeout(() => {
-            commit('playTrack', {trackId: state.currentTrackId});
+            commit('playTrack', {trackId: state.players[payload.playerPosition].currentTrackId, ...payload});
           }, 10)
         } else {
             // Reached end of playlist
         }
       }
     },
-    previous({commit, state}){
+    previous({commit, state}, payload){ // {playerPosition, playlistPosition}
       // check if there's a previous track on the playlist
-      if((state.currentTrackId - 1) >= 0){
+      if((state.players[payload.playerPosition].currentTrackId - 1) >= 0){
         // play previous song
-        commit('updateCurrentTrackId',{trackId: (state.currentTrackId - 1)})
+        commit('updateCurrentTrackId',{trackId: (state.players[payload.playerPosition].currentTrackId - 1), ...payload})
         setTimeout(() => {
-          commit('playTrack', {trackId: state.currentTrackId});
+          commit('playTrack', {trackId: state.players[payload.playerPosition].currentTrackId, ...payload});
         }, 10)
       } else {
         // check if continuous playback is true
         // TODO convert this, to repeat all check instead
-        if(state.continuousPlaybackStatus){
+        if(state.players[payload.playerPosition].continuousPlaybackStatus){
           // play last song
-          commit('updateCurrentTrackId',{trackId: (state.songsCount - 1)})
+          commit('updateCurrentTrackId',{trackId: (state.playlists[payload.playlistPosition].count - 1), ...payload})
           setTimeout(() => {
-            commit('playTrack', {trackId: state.currentTrackId});
+            commit('playTrack', {trackId: state.players[payload.playerPosition].currentTrackId, ...payload});
           }, 10)
         } else {
           // Reached start of playlist
         }
       }
     },
-    repeat({commit}, trackId){
+    repeat({commit}, payload){ // {trachId, playerPosition}
       return new Promise((resolve) => {
         setTimeout(() => {
-          commit('playTrack',{trackId: trackId});
+          commit('playTrack', payload);
           resolve()
         }, 10)
       })
     },
-    changeContinuousPlay({commit}, status){
-      return commit('updateContinuousPlaybackStatus',{status: status});
+    changeContinuousPlay({state, commit}, payload){ // {playerPosition, status}
+      return commit('updateContinuousPlaybackStatus', {playerPosition: state.activePlayer.position, status: payload});
     },
-    changeCurrentTrackId({commit}, id){
-      return commit('updateCurrentTrackId',{trackId: id});
+    changeCurrentTrackId({commit}, payload){ // {playerPosition, trackId}
+      return commit('updateCurrentTrackId', payload);
     },
-    changeCurrentTrackTime({commit}, time){
-      return commit('updateCurrentTrackTime',{time: time});
+    changeCurrentTrackTime({commit}, payload){ // {playerPosition, time}
+      return commit('updateCurrentTrackTime', payload);
     },
-    changeCurrentTrackDuration({commit}, time){
-      return commit('updateCurrentTrackDuration',{time: time});
+    changeCurrentTrackDuration({commit}, payload){ // {playerPosition, time}
+      return commit('updateCurrentTrackDuration', payload);
     },
-    changePlayerIsLoading({commit}, status) {
-      commit('updatePlayerIsLoading', {status: status})
+    changePlayerIsLoading({commit}, payload) { // {playerPosition, status}
+      commit('updatePlayerIsLoading', payload)
     },
-    changePlayerIsPlaying({commit}, status) {
-      commit('updatePlayerIsPlaying', {status: status})
+    changePlayerIsPlaying({commit}, payload) { // {playerPosition, status}
+      commit('updatePlayerIsPlaying', payload)
     },
-    changePlayerIsPaused({commit}, status) {
-      commit('updatePlayerIsPaused', {status: status})
+    changePlayerIsPaused({commit}, payload) { // {playerPosition, status}
+      commit('updatePlayerIsPaused', payload)
     },
-    changePlayerIsStopped({commit}, status) {
-      commit('updatePlayerIsStopped', {status: status})
+    changePlayerIsStopped({commit}, payload) { // {playerPosition, status}
+      commit('updatePlayerIsStopped', payload)
     },
-    changeVolume({commit}, volume) {
-      commit('updatePlayerVolume', {volume: volume})
+    changeVolume({state, commit}, payload) { // {playerPosition, volume}
+      commit('updatePlayerVolume', {playerPosition: state.activePlayer.position, volume: payload})
+    },
+    updateActivePlayer({commit}, payload){
+      return commit('updateActivePlayer', payload)
     },
   }
 })
