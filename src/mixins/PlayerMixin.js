@@ -205,6 +205,7 @@ const PlayerMixin = {
       changeCurrentTrackId: 'changeCurrentTrackId',
       changeVolume: 'changeVolume',
       seekToTime: 'seek',
+      updateActivePlayer: 'updateActivePlayer'
     }),
   }
 }
