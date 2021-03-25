@@ -49,9 +49,39 @@ export default new Vuex.Store({
   },
 
   mutations: {
-    updateSongs(state, payload){
-      state.songs = payload.songs
-      state.songsCount = state.songs.length
+    updatePlaylistSongs(state, payload){
+      state.playlists[payload.playlistPosition].songs = payload.songs
+      state.playlists[payload.playlistPosition].count = state.playlists[payload.playlistPosition].songs.length
+    },
+    async addPlaylist(state, payload){ // {title, songs}
+      if(payload.songs){ // check if playlist to be added has songs
+        await state.playlists.push({
+          title: payload.title || `playlist ${state.playlists.length + 1}`,
+          songs: payload.songs,
+          count: payload.songs.length
+        })
+        // update player objects
+        await state.players.push(state.playerObjectAnatomy)
+
+        // add active player & playlist
+        state.activePlaylist = {position: 0, ...state.playlists[0]}
+        state.activePlayer = {position: 0, ...state.players[0]}
+      } else {
+        console.log("Playlist has no songs, you can not add an empty playlist")
+      }
+    },
+    removePlaylist(state, payload){
+      if(state.playlists.length > 0){ // check if at least one playlist exists
+        // if position is not specified remove the last added playlist
+        if(payload.playlistPosition !== undefined){
+          state.playlists.splice(payload.playlistPosition, 0)
+          state.players.splice(payload.playlistPosition, 0)
+        } else {
+          state.playlists.pop()
+          this.players.pop()
+        }
+      }
+    },
     },
     updateContinuousPlaybackStatus(state, payload){
       state.continuousPlaybackStatus = payload.status
