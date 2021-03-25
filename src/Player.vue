@@ -47,7 +47,7 @@
       this.updatePlaylist(this.demoPlaylist)
     },
     methods: {
-      ...mapActions(['updatePlaylist'])
+      ...mapActions(['addPlaylist'])
     }
   }
 </script>
