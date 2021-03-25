@@ -35,7 +35,7 @@ const PlayerMixin = {
   methods: {
     emitCurrentSong(){
       setTimeout(()=>{
-        this.$emit('current-song', this.getSongs[this.getCurrentTrackId])
+        this.$emit('current-song', this.getSongs(this.activePlayer.position)[this.getCurrentTrackId(this.activePlayer.position)])
       }, 200)
     },
     playCurrentSong(){
