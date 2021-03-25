@@ -265,6 +265,8 @@ export default new Vuex.Store({
     changeVolume({state, commit}, payload) { // {playerPosition, volume}
       commit('updatePlayerVolume', {playerPosition: state.activePlayer.position, volume: payload})
     },
+    updateActivePlayer({commit}, payload){
+      return commit('updateActivePlayer', payload)
     },
   }
 })
