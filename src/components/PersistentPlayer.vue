@@ -12,13 +12,13 @@ h-10 w-10"><RevealIcon w="40" h="40" /></span>
 						</div>
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle">
 							<span @click="playCurrentSong()">
-								<PlayIcon class="tw-cursor-pointer tw-text-white" v-show="!isPlaying && !playerIsLoading" w="30" h="30"/>
+								<PlayIcon class="tw-cursor-pointer tw-text-white" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
 							</span>
 							<span @click="pauseSong()">
-								<PauseIcon class="tw-cursor-pointer tw-text-white" v-show="isPlaying && !playerIsLoading" w="30" h="30" />
+								<PauseIcon class="tw-cursor-pointer tw-text-white" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
 							</span>
 							<span>
-								<BufferingIcon class="tw-text-white tw-cursor-pointer" animate="beat" v-show="playerIsLoading" w="30" h="30" />
+								<BufferingIcon class="tw-text-white tw-cursor-pointer" animate="beat" v-show="activePlayer.playerIsLoading" w="30" h="30" />
 							</span>
 						</div>
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle" @click="stop()">
@@ -30,17 +30,17 @@ h-10 w-10"><RevealIcon w="40" h="40" /></span>
 					</div>
 					<div class="tw-inline-flex tw-flex-row tw-w-full tw-items-center tw-justify-between px-4 py-1">
 						<div class="tw-flex-1 tw-w-3/4">
-							<xns-seek-bar @seekedTo="changeVolume" :bar-height="volumeHeightPersistent" :bar-color="progressColor" :bar-shade-color="progressBgColor" :intensity="100" :current-value="volume" :total-value="1"></xns-seek-bar>
+							<xns-seek-bar @seekedTo="changeVolume" :bar-height="volumeHeightPersistent" :bar-color="progressColor" :bar-shade-color="progressBgColor" :intensity="100" :current-value="activePlayer.volume" :total-value="1"></xns-seek-bar>
 						</div>
 						<div class="tw-flex-1 tw-w-1/4">
-							<span v-tooltip.top-center="continuousPlaybackStatus ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay(!continuousPlaybackStatus)" :class="continuousPlaybackStatus ? 'tw-bg-transparent tw-float-right tw-text-white tw-text-primary-green' : 'tw-bg-transparent tw-float-right tw-text-white'"><RefreshIcon w="30" h="30"/></span>
+							<span v-tooltip.top-center="activePlayer.continuousPlaybackStatus ? 'Repeat: ALL' : 'Repeat: OFF'" @click="changeContinuousPlay(!activePlayer.continuousPlaybackStatus)" :class="activePlayer.continuousPlaybackStatus ? 'tw-bg-transparent tw-float-right tw-text-white tw-text-primary-green' : 'tw-bg-transparent tw-float-right tw-text-white'"><RefreshIcon w="30" h="30"/></span>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="tw-flex-1 tw-w-full md:tw-w-2/3 lg:tw-w-3/4 xl:tw-w-4/5 playing-progress tw-m-0 tw-px-3 sm:tw-p-12 tw-h-16 sm:tw-h-auto md:tw-h-full lg:tw-h-full xl:tw-h-full">
-				<xns-seek-bar :bar-height="progressHeightPersistent" :bar-color="progressColor" :bar-shade-color="progressBgColor" :intensity="1" :current-value="currentTrackTime" :total-value="currentTrackDuration" @seekedTo="seekToTime"></xns-seek-bar>
-				<div v-if="!isNaN(currentTrackDuration)" class="tw-float-right tw-text-2xl tw-text-sm sm:tw-text-lg tw-font-bold tw-text-white"> {{currentTrackTime | doubleDigits }} - {{currentTrackDuration | doubleDigits}}</div>
+				<xns-seek-bar :bar-height="progressHeightPersistent" :bar-color="progressColor" :bar-shade-color="progressBgColor" :intensity="1" :current-value="activePlayer.currentTrackTime" :total-value="activePlayer.currentTrackDuration" @seekedTo="seekPlayer"></xns-seek-bar>
+				<div v-if="!isNaN(activePlayer.currentTrackDuration)" class="tw-float-right tw-text-2xl tw-text-sm sm:tw-text-lg tw-font-bold tw-text-white"> {{activePlayer.currentTrackTime | doubleDigits }} - {{activePlayer.currentTrackDuration | doubleDigits}}</div>
 				<div v-else class="tw-float-right tw-text-2xl tw-text-sm sm:tw-text-lg tw-font-bold tw-text-white">{{'0 : 00'}}</div>
 			</div>
 		</div>
