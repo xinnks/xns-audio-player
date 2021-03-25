@@ -6,29 +6,31 @@ export default new Vuex.Store({
   namespaced: false,
   state: {
     // audio tracks list
-    songs: [],
-    songsCount: 0,
-
-    //bools - playback helpers
-    isPlaying: false,
-    isPaused: false,
-    isStopped: false,
-    isFirstTrack: true,
-    isMuted: false,
-    playerIsLoading: false,
-    continuousPlaybackStatus: false,
+    playlists: [],
+    activePlaylist: {},
 
     // player element
-    audio: new Audio(),
-
-    // player properties
-    volume: 0.5,
-    buffered: 0,
-
-    // custom helper properties
-    currentTrackId: 0,
-    currentTrackTime: 0,
-    currentTrackDuration: 0,
+    players: [],
+    activePlayer: {},
+    playerObjectAnatomy: {
+      //bools - playback helpers
+      isPlaying: false,
+      isPaused: false,
+      isStopped: false,
+      isFirstTrack: true,
+      isMuted: false,
+      playerIsLoading: false,
+      continuousPlaybackStatus: false,
+      // player element
+      audio: new Audio(),
+      // player properties
+      volume: 0.5,
+      buffered: 0,
+      // custom helper properties
+      currentTrackId: 0,
+      currentTrackTime: 0,
+      currentTrackDuration: 0,
+    }
   },
 
   getters: {
