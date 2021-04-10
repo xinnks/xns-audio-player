@@ -1,5 +1,8 @@
 import {mapGetters, mapActions, mapState} from 'vuex'
+import MediaSessionApiMixin from './MediaSessionApiMixin'
+import PlaybackMixin from './PlaybackMixin'
 const PlayerMixin = {
+  mixins: [MediaSessionApiMixin, PlaybackMixin],
   data(){
     return {
       progressColor: "#21FB92",
@@ -9,6 +12,7 @@ const PlayerMixin = {
       volumeHeightMain: 8,
       progressHeightPersistent: 15,
       volumeHeightPersistent: 5,
+      fixedSkipTime: 10
     }
   },
   watch: {
@@ -30,58 +34,20 @@ const PlayerMixin = {
       'isMuted',
       'continuousPlaybackStatus'
     ]),
-    ...mapGetters(['getAudio', 'getSongs', 'getSongsCount', 'getVolume', 'getCurrentTrackId', 'getCurrentTrackTime', 'getCurrentTrackDuration', 'getPlayerIsLoading', 'getPlayerIsPlaying', 'getPlayerIsPaused', 'getPlayerIsStopped', 'getContinuousPlaybackStatus', 'getCurrentTrackId'])
+    ...mapGetters(['getAudio', 'getSongs', 'getSongsCount', 'getVolume', 'getCurrentTrackId', 'getCurrentTrackTime', 'getCurrentTrackDuration', 'getPlayerIsLoading', 'getPlayerIsPlaying', 'getPlayerIsPaused', 'getPlayerIsStopped', 'getContinuousPlaybackStatus', 'getCurrentTrackId', 'getMediaSessionAPI'])
+  },
+  mounted(){
+    if(this.getMediaSessionAPI.support){
+      navigator.mediaSession.setActionHandler('play', () => { this.playCurrentSong() });
+      navigator.mediaSession.setActionHandler('pause', () => { this.pauseSong() });
+      navigator.mediaSession.setActionHandler('stop', () => { this.stop() });
+      navigator.mediaSession.setActionHandler('seekbackward', () => { this.seekPlayer(Math.max(this.activePlayer.currentTrackTime - this.fixedSkipTime, 0)) });
+      navigator.mediaSession.setActionHandler('seekforward', () => { this.seekPlayer(Math.min(this.activePlayer.currentTrackTime + this.fixedSkipTime, this.activePlayer.currentTrackDuration)) });
+      navigator.mediaSession.setActionHandler('previoustrack', () => { this.playPrevSong() });
+      navigator.mediaSession.setActionHandler('nexttrack', () => { this.playNextSong() });
+    }
   },
   methods: {
-    emitCurrentSong(){
-      setTimeout(()=>{
-        this.$emit('current-song', this.getSongs(this.activePlayer.position)[this.getCurrentTrackId(this.activePlayer.position)])
-      }, 200)
-    },
-    playCurrentSong(){
-      this.playTrack({playerPosition: this.activePlayer.position, trackId: this.activePlayer.currentTrackId})
-      setTimeout(() =>{
-        this.audioListening()
-        // emit new track
-        this.emitCurrentSong()
-      }, 200)
-    },
-    playSelectedSong(payload){
-      this.playTrack(payload || {playerPosition: this.activePlayer.position, trackId: this.activePlayer.currentTrackId})
-      setTimeout(() =>{
-        this.audioListening()
-        // emit new track
-        this.emitCurrentSong()
-      }, 200)
-    },
-    seekPlayer(time){
-      this.audioListening(false) // stop listening to audio oject
-      this.seekToTime({playerPosition: this.activePlayer.position, time: time}) // seek to given time
-      setTimeout(() =>{
-        this.audioListening() // resume listening to audio oject
-      }, 10)
-    },
-    pauseSong(){
-      this.pause({playerPosition: this.activePlayer.position})
-    },
-    playNextSong(){
-      this.nextSong({playerPosition: this.activePlayer.position})
-      this.audioListening(false)
-      setTimeout(() =>{
-        this.audioListening()
-        // emit new track
-        this.emitCurrentSong()
-      }, 200)
-    },
-    playPrevSong(){
-      this.audioListening(false)
-      this.prevSong({playerPosition: this.activePlayer.position, playlistPosition: this.activePlayer.position})
-      setTimeout(() =>{
-        this.audioListening()
-        // emit new track
-        this.emitCurrentSong()
-      }, 200)
-    },
     audioListening(listen = true){
       if(listen){
         // start listening
@@ -219,7 +185,8 @@ const PlayerMixin = {
       changeCurrentTrackId: 'changeCurrentTrackId',
       changeVolume: 'changeVolume',
       seekToTime: 'seek',
-      updateActivePlayer: 'updateActivePlayer'
+      updateActivePlayer: 'updateActivePlayer',
+      UpdateMediaSessionAPI: 'UpdateMediaSessionAPI',
     }),
   }
 }

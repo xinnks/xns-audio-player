@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-
+/* eslint-disable */
 export default new Vuex.Store({
   namespaced: false,
   state: {
@@ -30,7 +30,9 @@ export default new Vuex.Store({
       currentTrackId: 0,
       currentTrackTime: 0,
       currentTrackDuration: 0,
-    }
+    },
+
+    mediaSessionAPI: {support: false, data: {}},
   },
 
   getters: {
@@ -46,6 +48,7 @@ export default new Vuex.Store({
     getPlayerIsPaused: (state) => (playerPosition) => state.players[playerPosition].isPaused,
     getPlayerIsStopped: (state) => (playerPosition) => state.players[playerPosition].isStopped,
     getContinuousPlaybackStatus: (state) => (playerPosition) => state.players[playerPosition].continuousPlaybackStatus,
+    getMediaSessionAPI: (state) => state.mediaSessionAPI,
   },
 
   mutations: {
@@ -144,6 +147,19 @@ export default new Vuex.Store({
       // seek to time
       state.players[payload.playerPosition].audio.currentTime = payload.time
     },
+    async updateMediaSessionAPISupport(state, payload){
+      state.mediaSessionAPI.support = payload.support;
+    },
+    async updateMediaSessionAPI(state, payload){
+        if(state.mediaSessionAPI.support){
+          state.mediaSessionAPI.data = await Object.assign(state.mediaSessionAPI.data, payload.data);
+        }else{
+          console.log("No Media Session API Support");
+        }
+    },
+    updateNavigatorMetadataForMediaSessionAPI(state, payload){
+      navigator.mediaSession.metadata = new MediaMetadata(payload);
+    }
   },
 
   actions: {
@@ -268,5 +284,27 @@ export default new Vuex.Store({
     updateActivePlayer({commit}, payload){
       return commit('updateActivePlayer', payload)
     },
+
+    UpdateMediaSessionAPI({commit, state}, payload){
+      if(Object.prototype.hasOwnProperty.call(payload, "support") && !state.mediaSessionAPI.support){
+        // update Media Session support state
+        commit('updateMediaSessionAPISupport', payload);
+      } else { // update metadata or display no-support log
+        if(state.mediaSessionAPI.support){
+          const updateMSA = new Promise((resolve) => {
+            setTimeout(() => {
+              commit('updateMediaSessionAPI', payload);
+              resolve() }, 10)
+          });
+          updateMSA.then(() => {
+            if(state.mediaSessionAPI.support){
+              commit('updateNavigatorMetadataForMediaSessionAPI', payload.data);
+            }
+          })
+        }else{
+          console.log("NO Media Session Support");
+        }
+      }
+    }
   }
 })
