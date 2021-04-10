@@ -12,6 +12,7 @@ const PlayerMixin = {
       volumeHeightMain: 8,
       progressHeightPersistent: 15,
       volumeHeightPersistent: 5,
+      fixedSkipTime: 10
     }
   },
   watch: {
@@ -34,6 +35,17 @@ const PlayerMixin = {
       'continuousPlaybackStatus'
     ]),
     ...mapGetters(['getAudio', 'getSongs', 'getSongsCount', 'getVolume', 'getCurrentTrackId', 'getCurrentTrackTime', 'getCurrentTrackDuration', 'getPlayerIsLoading', 'getPlayerIsPlaying', 'getPlayerIsPaused', 'getPlayerIsStopped', 'getContinuousPlaybackStatus', 'getCurrentTrackId'])
+  },
+  mounted(){
+    if(this.getMediaSessionAPI.support){
+      navigator.mediaSession.setActionHandler('play', () => { this.playCurrentSong() });
+      navigator.mediaSession.setActionHandler('pause', () => { this.pauseSong() });
+      navigator.mediaSession.setActionHandler('stop', () => { this.stop() });
+      navigator.mediaSession.setActionHandler('seekbackward', () => { this.seekPlayer(Math.max(this.activePlayer.currentTrackTime - this.fixedSkipTime, 0)) });
+      navigator.mediaSession.setActionHandler('seekforward', () => { this.seekPlayer(Math.min(this.activePlayer.currentTrackTime + this.fixedSkipTime, this.activePlayer.currentTrackDuration)) });
+      navigator.mediaSession.setActionHandler('previoustrack', () => { this.playPrevSong() });
+      navigator.mediaSession.setActionHandler('nexttrack', () => { this.playNextSong() });
+    }
   },
   methods: {
     audioListening(listen = true){
