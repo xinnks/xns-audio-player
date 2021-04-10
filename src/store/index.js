@@ -147,6 +147,9 @@ export default new Vuex.Store({
       // seek to time
       state.players[payload.playerPosition].audio.currentTime = payload.time
     },
+    async updateMediaSessionAPISupport(state, payload){
+      state.mediaSessionAPI.support = payload.support;
+    },
   },
 
   actions: {
