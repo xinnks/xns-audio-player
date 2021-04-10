@@ -12,6 +12,16 @@ const PlaybackMixin = {
     emitCurrentSong(){
       setTimeout(()=>{
         this.$emit('current-song', this.getSongs(this.activePlayer.position)[this.getCurrentTrackId(this.activePlayer.position)])
+
+        // update mediaSession Metadata
+        this.mediaSessionController({
+          title: this.activePlaylist.songs[this.activePlayer.currentTrackId].title || "unknown",
+          artist: this.activePlaylist.songs[this.activePlayer.currentTrackId].artist || "unknown",
+          album: this.activePlaylist.songs[this.activePlayer.currentTrackId].artist || "unknown",
+          artwork: [
+            { src: this.activePlaylist.songs[this.activePlayer.currentTrackId].cover || 'https://dummyimage.com/512x512', type: 'image/png' }
+          ]
+        })
       }, 200)
     },
     playCurrentSong(){
