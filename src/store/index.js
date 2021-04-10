@@ -30,7 +30,9 @@ export default new Vuex.Store({
       currentTrackId: 0,
       currentTrackTime: 0,
       currentTrackDuration: 0,
-    }
+    },
+
+    mediaSessionAPI: {support: false, data: {}},
   },
 
   getters: {
@@ -46,6 +48,7 @@ export default new Vuex.Store({
     getPlayerIsPaused: (state) => (playerPosition) => state.players[playerPosition].isPaused,
     getPlayerIsStopped: (state) => (playerPosition) => state.players[playerPosition].isStopped,
     getContinuousPlaybackStatus: (state) => (playerPosition) => state.players[playerPosition].continuousPlaybackStatus,
+    getMediaSessionAPI: (state) => state.mediaSessionAPI,
   },
 
   mutations: {
