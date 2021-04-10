@@ -157,6 +157,9 @@ export default new Vuex.Store({
           console.log("No Media Session API Support");
         }
     },
+    updateNavigatorMetadataForMediaSessionAPI(state, payload){
+      navigator.mediaSession.metadata = new MediaMetadata(payload);
+    }
   },
 
   actions: {
