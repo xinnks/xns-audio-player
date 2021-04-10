@@ -34,7 +34,7 @@ const PlayerMixin = {
       'isMuted',
       'continuousPlaybackStatus'
     ]),
-    ...mapGetters(['getAudio', 'getSongs', 'getSongsCount', 'getVolume', 'getCurrentTrackId', 'getCurrentTrackTime', 'getCurrentTrackDuration', 'getPlayerIsLoading', 'getPlayerIsPlaying', 'getPlayerIsPaused', 'getPlayerIsStopped', 'getContinuousPlaybackStatus', 'getCurrentTrackId'])
+    ...mapGetters(['getAudio', 'getSongs', 'getSongsCount', 'getVolume', 'getCurrentTrackId', 'getCurrentTrackTime', 'getCurrentTrackDuration', 'getPlayerIsLoading', 'getPlayerIsPlaying', 'getPlayerIsPaused', 'getPlayerIsStopped', 'getContinuousPlaybackStatus', 'getCurrentTrackId', 'getMediaSessionAPI'])
   },
   mounted(){
     if(this.getMediaSessionAPI.support){
