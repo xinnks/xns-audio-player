@@ -1,7 +1,8 @@
 import {mapGetters, mapActions, mapState} from 'vuex'
+import MediaSessionApiMixin from './MediaSessionApiMixin'
 import PlaybackMixin from './PlaybackMixin'
 const PlayerMixin = {
-  mixins: [PlaybackMixin],
+  mixins: [MediaSessionApiMixin, PlaybackMixin],
   data(){
     return {
       progressColor: "#21FB92",
@@ -172,7 +173,8 @@ const PlayerMixin = {
       changeCurrentTrackId: 'changeCurrentTrackId',
       changeVolume: 'changeVolume',
       seekToTime: 'seek',
-      updateActivePlayer: 'updateActivePlayer'
+      updateActivePlayer: 'updateActivePlayer',
+      UpdateMediaSessionAPI: 'UpdateMediaSessionAPI',
     }),
   }
 }
