@@ -19,7 +19,7 @@ To add a new playlist call the __addPlaylist()__ method from within a method or 
 ```
 Where `demoPlaylist` is an array of song objects in the following format
 ```js
-{ audio: "link_to_audio_file.mp3", artist: "Artist's name", tittle: "Song title", album: "album name", cover: "link_to_album_or_song_cover_image.jpg"}
+{ audio: "link_to_audio_file.mp3", artist: "Artist's name", title: "Song title", album: "album name", cover: "link_to_album_or_song_cover_image.jpg"}
 ```
 
 
