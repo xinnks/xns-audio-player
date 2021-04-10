@@ -150,6 +150,13 @@ export default new Vuex.Store({
     async updateMediaSessionAPISupport(state, payload){
       state.mediaSessionAPI.support = payload.support;
     },
+    async updateMediaSessionAPI(state, payload){
+        if(state.mediaSessionAPI.support){
+          state.mediaSessionAPI.data = await Object.assign(state.mediaSessionAPI.data, payload.data);
+        }else{
+          console.log("No Media Session API Support");
+        }
+    },
   },
 
   actions: {
