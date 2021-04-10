@@ -284,5 +284,27 @@ export default new Vuex.Store({
     updateActivePlayer({commit}, payload){
       return commit('updateActivePlayer', payload)
     },
+
+    UpdateMediaSessionAPI({commit, state}, payload){
+      if(Object.prototype.hasOwnProperty.call(payload, "support") && !state.mediaSessionAPI.support){
+        // update Media Session support state
+        commit('updateMediaSessionAPISupport', payload);
+      } else { // update metadata or display no-support log
+        if(state.mediaSessionAPI.support){
+          const updateMSA = new Promise((resolve) => {
+            setTimeout(() => {
+              commit('updateMediaSessionAPI', payload);
+              resolve() }, 10)
+          });
+          updateMSA.then(() => {
+            if(state.mediaSessionAPI.support){
+              commit('updateNavigatorMetadataForMediaSessionAPI', payload.data);
+            }
+          })
+        }else{
+          console.log("NO Media Session Support");
+        }
+      }
+    }
   }
 })
