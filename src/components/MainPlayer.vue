@@ -50,19 +50,19 @@
 </template>
 
 <script>
-    import SongsPlaylist from './../components/SongsPlaylist'
+    import SongsPlaylist from './../components/SongsPlaylist.vue'
     import { VCircle } from 'v-progress'
     import XnsSeekBar from 'xns-seek-bar'
     import Vue from 'vue'
     import VTooltip from 'v-tooltip'
     import './../assets/tooltip.css'
-    import RefreshIcon from 'vue-ionicons/dist/md-refresh'
-    import SkipBackwardIcon from 'vue-ionicons/dist/md-skip-backward'
-    import PlayIcon from 'vue-ionicons/dist/md-play'
-    import PauseIcon from 'vue-ionicons/dist/md-pause'
-    import SquareIcon from 'vue-ionicons/dist/md-square'
-    import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward'
-    import BufferingIcon from 'vue-ionicons/dist/md-refresh'
+    import RefreshIcon from 'vue-ionicons/dist/md-refresh.vue'
+    import SkipBackwardIcon from 'vue-ionicons/dist/md-skip-backward.vue'
+    import PlayIcon from 'vue-ionicons/dist/md-play.vue'
+    import PauseIcon from 'vue-ionicons/dist/md-pause.vue'
+    import SquareIcon from 'vue-ionicons/dist/md-square.vue'
+    import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward.vue'
+    import BufferingIcon from 'vue-ionicons/dist/md-refresh.vue'
     import PlayerMixin from './../mixins/PlayerMixin'
     Vue.use(VTooltip);
     Vue.use(XnsSeekBar)

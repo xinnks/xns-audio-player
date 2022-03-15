@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import PersistentPlayer from './components/PersistentPlayer'
+  import PersistentPlayer from './components/PersistentPlayer.vue'
   import { mapActions } from 'vuex'
   export default {
     name: 'Player',
