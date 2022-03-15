@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import BufferingIcon from 'vue-ionicons/dist/ios-play-circle'
+import BufferingIcon from 'vue-ionicons/dist/ios-play-circle.vue'
 import PlayerMixin from './../mixins/PlayerMixin'
 export default {
   name: 'SongBlock',

@@ -1,6 +1,6 @@
 <template>
   <div v-if="activePlaylist && (activePlaylist.songs.length > 0)" class="tw-flex tw-flex-wrap sm:tw-flex-no-wrap tw-flex-col sm:tw-flex-row xl:tw-flex-row sm:tw-items-start tw-m-2 tw-p-2">
-    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow" :style="'background: url(' + activePlaylist.songs[activePlayer.currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
+    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow tw-bg-no-repeat tw-bg-contain tw-bg-center" :style="'background: url(' + activePlaylist.songs[activePlayer.currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
       <div class="tw-relative tw-shadow tw-max-w-full play-controls">
         <div class="tw-flex tw-flex-col tw-items-center tw-p-0 tw-m-0">
           <div class="tw-flex-grow tw-h-full tw-max-h-coverx tw-w-full tw-m-3 tw-items-center tw-align-middle tw-mt-1 tw-mx-auto tw-mb-3 tw-p-2">
@@ -8,24 +8,24 @@
           </div>
           <div class="tw-inline-flex tw-px-4 tw-py-1 tw-mb-2 tw-align-middle tw-justify-around pctrl tw-rounded-full">
             <div class="tw-mx-4">
-              <span @click="playPrevSong()"><SkipBackwardIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="playPrevSong()"><SkipBackwardIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
               <span @click="playCurrentSong()">
-                <PlayIcon class="tw-text-white tw-cursor-pointer" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
+                <PlayIcon class="tw-cursor-pointer" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
               </span>
               <span @click="pauseSong()">
-                <PauseIcon class="tw-text-white tw-cursor-pointer" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
+                <PauseIcon class="tw-cursor-pointer" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
               </span>
               <span>
-                <BufferingIcon class="tw-text-white tw-cursor-pointer" animate="rotate" v-show="activePlayer.playerIsLoading" w="30" h="30" />
+                <BufferingIcon class="tw-cursor-pointer" animate="rotate" v-show="activePlayer.playerIsLoading" w="30" h="30" />
               </span>
             </div>
             <div class="tw-mx-4">
-              <span @click="stop()"><SquareIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="stop()"><SquareIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="tw-mx-4">
-              <span @click="playNextSong()"><SkipForwardIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="playNextSong()"><SkipForwardIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
           </div>
           <div class="tw-flex-grow tw-w-full track-scrubbing tw-mx-5 pctrl">
@@ -50,19 +50,19 @@
 </template>
 
 <script>
-    import SongsPlaylist from './../components/SongsPlaylist'
+    import SongsPlaylist from './../components/SongsPlaylist.vue'
     import { VCircle } from 'v-progress'
     import XnsSeekBar from 'xns-seek-bar'
     import Vue from 'vue'
     import VTooltip from 'v-tooltip'
     import './../assets/tooltip.css'
-    import RefreshIcon from 'vue-ionicons/dist/md-refresh'
-    import SkipBackwardIcon from 'vue-ionicons/dist/md-skip-backward'
-    import PlayIcon from 'vue-ionicons/dist/md-play'
-    import PauseIcon from 'vue-ionicons/dist/md-pause'
-    import SquareIcon from 'vue-ionicons/dist/md-square'
-    import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward'
-    import BufferingIcon from 'vue-ionicons/dist/md-refresh'
+    import RefreshIcon from 'vue-ionicons/dist/md-refresh.vue'
+    import SkipBackwardIcon from 'vue-ionicons/dist/md-skip-backward.vue'
+    import PlayIcon from 'vue-ionicons/dist/md-play.vue'
+    import PauseIcon from 'vue-ionicons/dist/md-pause.vue'
+    import SquareIcon from 'vue-ionicons/dist/md-square.vue'
+    import SkipForwardIcon from 'vue-ionicons/dist/md-skip-forward.vue'
+    import BufferingIcon from 'vue-ionicons/dist/md-refresh.vue'
     import PlayerMixin from './../mixins/PlayerMixin'
     Vue.use(VTooltip);
     Vue.use(XnsSeekBar)

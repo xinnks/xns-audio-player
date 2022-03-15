@@ -8,12 +8,12 @@ export default new VueRouter({
 		{
 			path: '/',
 			name: 'home-page',
-			component: () => import('./views/Home')
+			component: () => import('./views/Home.vue')
 		},
 		{
 			path: '/about',
 			name: 'about-page',
-			component: () => import('./views/About')
+			component: () => import('./views/About.vue')
 		}
 	]
 });

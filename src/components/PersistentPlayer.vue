@@ -8,24 +8,24 @@ h-10 w-10"><RevealIcon w="40" h="40" /></span>
 				<div class="tw-inline-flex tw-flex-col tw-items-center tw-w-full">
 					<div class="tw-inline-flex tw-flex-row tw-w-full tw-items-center tw-align-middle tw-justify-around tw-px-4 tw-py-1">
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle" @click="playPrevSong()">
-							<SkipBackwardIcon class="tw-cursor-pointer tw-text-white" w="30" h="30" />
+							<SkipBackwardIcon class="tw-cursor-pointer" w="30" h="30" />
 						</div>
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle">
 							<span @click="playCurrentSong()">
-								<PlayIcon class="tw-cursor-pointer tw-text-white" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
+								<PlayIcon class="tw-cursor-pointer" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
 							</span>
 							<span @click="pauseSong()">
-								<PauseIcon class="tw-cursor-pointer tw-text-white" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
+								<PauseIcon class="tw-cursor-pointer" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
 							</span>
 							<span>
-								<BufferingIcon class="tw-text-white tw-cursor-pointer" animate="beat" v-show="activePlayer.playerIsLoading" w="30" h="30" />
+								<BufferingIcon class="tw-cursor-pointer" animate="beat" v-show="activePlayer.playerIsLoading" w="30" h="30" />
 							</span>
 						</div>
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle" @click="stop()">
-							<SquareIcon class="tw-cursor-pointer tw-text-white" w="30" h="30" />
+							<SquareIcon class="tw-cursor-pointer" w="30" h="30" />
 						</div>
 						<div class="tw-flex-1 tw-m-1 tw-justify-center tw-align-middle" @click="playNextSong()">
-							<SkipForwardIcon class="tw-cursor-pointer tw-text-white" w="30" h="30"/>
+							<SkipForwardIcon class="tw-cursor-pointer" w="30" h="30"/>
 						</div>
 					</div>
 					<div class="tw-inline-flex tw-flex-row tw-w-full tw-items-center tw-justify-between px-4 py-1">
@@ -52,15 +52,15 @@ import Vue from 'vue'
 import XnsSeekBar from 'xns-seek-bar'
 import VTooltip from 'v-tooltip'
 import './../assets/tooltip.css'
-import RefreshIcon from 'vue-ionicons/dist/ios-refresh'
-import SkipBackwardIcon from 'vue-ionicons/dist/ios-skip-backward'
-import PlayIcon from 'vue-ionicons/dist/ios-play'
-import PauseIcon from 'vue-ionicons/dist/ios-pause'
-import SquareIcon from 'vue-ionicons/dist/ios-square'
-import SkipForwardIcon from 'vue-ionicons/dist/ios-skip-forward'
+import RefreshIcon from 'vue-ionicons/dist/ios-refresh.vue'
+import SkipBackwardIcon from 'vue-ionicons/dist/ios-skip-backward.vue'
+import PlayIcon from 'vue-ionicons/dist/ios-play.vue'
+import PauseIcon from 'vue-ionicons/dist/ios-pause.vue'
+import SquareIcon from 'vue-ionicons/dist/ios-square.vue'
+import SkipForwardIcon from 'vue-ionicons/dist/ios-skip-forward.vue'
 import CloseIcon from 'vue-ionicons/dist/md-close-circle.vue'
 import RevealIcon from 'vue-ionicons/dist/ios-arrow-up.vue'
-import BufferingIcon from 'vue-ionicons/dist/ios-refresh-circle'
+import BufferingIcon from 'vue-ionicons/dist/ios-refresh-circle.vue'
 import PlayerMixin from './../mixins/PlayerMixin'
 Vue.use(VTooltip);
 Vue.use(XnsSeekBar);

@@ -5,18 +5,17 @@
   "author": "James Sinkala <xinnks@gmail.com>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "bulma": "^0.7.5",
-    "core-js": "^3.6.5",
     "v-progress": "^1.0.2",
     "v-tooltip": "^2.0.2",
     "vue": "^2.6.10",
     "vue-ionicons": "^3.0.5",
-    "vue-range-slider": "^0.6.0",
     "vue-router": "^3.4.7",
     "vue-simple-progress": "^1.1.0",
     "vuex": "^3.5.1",
@@ -24,16 +23,17 @@
     "xns-seek-bar": "^1.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.8",
     "@vue/cli-plugin-eslint": "^4.5.8",
     "@vue/cli-service": "^4.5.8",
+    "autoprefixer": "^10.4.2",
     "babel-eslint": "^10.0.3",
     "eslint": "^7.12.0",
     "eslint-plugin-vue": "^7.1.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^10.0.4",
+    "postcss": "^8.4.8",
     "tailwindcss": "^1.9.6",
-    "vue-template-compiler": "^2.6.12"
+    "vite": "^2.7.0",
+    "vite-plugin-vue2": "^1.9.3",
+    "vue-template-compiler": "^2.2.0"
   },
   "eslintConfig": {
     "root": true,

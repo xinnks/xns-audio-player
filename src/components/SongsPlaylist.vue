@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import SongBlock from './SongBlock'
+import SongBlock from './SongBlock.vue'
 export default {
   name: 'SongsPlaylist',
   components: {SongBlock},
