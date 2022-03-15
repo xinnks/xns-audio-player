@@ -8,24 +8,24 @@
           </div>
           <div class="tw-inline-flex tw-px-4 tw-py-1 tw-mb-2 tw-align-middle tw-justify-around pctrl tw-rounded-full">
             <div class="tw-mx-4">
-              <span @click="playPrevSong()"><SkipBackwardIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="playPrevSong()"><SkipBackwardIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="mx-4">
               <span @click="playCurrentSong()">
-                <PlayIcon class="tw-text-white tw-cursor-pointer" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
+                <PlayIcon class="tw-cursor-pointer" v-show="!activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30"/>
               </span>
               <span @click="pauseSong()">
-                <PauseIcon class="tw-text-white tw-cursor-pointer" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
+                <PauseIcon class="tw-cursor-pointer" v-show="activePlayer.isPlaying && !activePlayer.playerIsLoading" w="30" h="30" />
               </span>
               <span>
-                <BufferingIcon class="tw-text-white tw-cursor-pointer" animate="rotate" v-show="activePlayer.playerIsLoading" w="30" h="30" />
+                <BufferingIcon class="tw-cursor-pointer" animate="rotate" v-show="activePlayer.playerIsLoading" w="30" h="30" />
               </span>
             </div>
             <div class="tw-mx-4">
-              <span @click="stop()"><SquareIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="stop()"><SquareIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
             <div class="tw-mx-4">
-              <span @click="playNextSong()"><SkipForwardIcon class="tw-text-white tw-cursor-pointer" w="30" h="30" /></span>
+              <span @click="playNextSong()"><SkipForwardIcon class="tw-cursor-pointer" w="30" h="30" /></span>
             </div>
           </div>
           <div class="tw-flex-grow tw-w-full track-scrubbing tw-mx-5 pctrl">
