@@ -1,6 +1,6 @@
 <template>
   <div v-if="activePlaylist && (activePlaylist.songs.length > 0)" class="tw-flex tw-flex-wrap sm:tw-flex-no-wrap tw-flex-col sm:tw-flex-row xl:tw-flex-row sm:tw-items-start tw-m-2 tw-p-2">
-    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow" :style="'background: url(' + activePlaylist.songs[activePlayer.currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
+    <div class="tw-flex-grow sm:tw-flex-grow-0 md:tw-flex-grow-0 lg:tw-flex-grow-0 xl:tw-flex-grow-0 tw-p-0 tw-m-0 tw-max-h-cover tw-shadow tw-bg-no-repeat tw-bg-contain tw-bg-center" :style="'background: url(' + activePlaylist.songs[activePlayer.currentTrackId].cover + ');background-repeat: no-repeat;background-position:center;background-size: cover'">
       <div class="tw-relative tw-shadow tw-max-w-full play-controls">
         <div class="tw-flex tw-flex-col tw-items-center tw-p-0 tw-m-0">
           <div class="tw-flex-grow tw-h-full tw-max-h-coverx tw-w-full tw-m-3 tw-items-center tw-align-middle tw-mt-1 tw-mx-auto tw-mb-3 tw-p-2">
