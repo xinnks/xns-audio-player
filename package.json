@@ -27,7 +27,7 @@
     "@vue/cli-service": "^4.5.8",
     "autoprefixer": "^10.4.2",
     "babel-eslint": "^10.0.3",
-    "eslint": "^7.12.0",
+    "eslint": "^6.0.0",
     "eslint-plugin-vue": "^7.1.0",
     "postcss": "^8.4.8",
     "tailwindcss": "^1.9.6",
@@ -58,5 +58,15 @@
   "browserslist": [
     "> 1%",
     "last 2 versions"
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "postcss@<7.0.36": ">=7.0.36",
+      "node-forge@<1.0.0": ">=1.0.0",
+      "ansi-regex@>2.1.1 <5.0.1": ">=5.0.1",
+      "nth-check@<2.0.1": ">=2.0.1",
+      "postcss@>=7.0.0 <7.0.36": ">=7.0.36",
+      "glob-parent@<5.1.2": ">=5.1.2"
+    }
+  }
 }
