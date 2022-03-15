@@ -1,5 +1,6 @@
 module.exports = {
   prefix: 'tw-',
+  content: ["./src/*.{vue,js}","./src/**/*.{vue,js}"],
   theme: {
     container: {
       center: true,
