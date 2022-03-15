@@ -15,6 +15,9 @@
         </div>
       </div>
       <router-view/>
+      <div class="w-full tw-text-center tw-mt-8 tw-text-gray-500">
+        Royalty Free Music from Bensound
+      </div>
     </div>
     <PersistentPlayer/>
   </div>
