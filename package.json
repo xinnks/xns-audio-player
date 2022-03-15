@@ -5,9 +5,10 @@
   "author": "James Sinkala <xinnks@gmail.com>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "bulma": "^0.7.5",
@@ -33,7 +34,9 @@
     "eslint-plugin-vue": "^7.1.0",
     "postcss": "^8.4.8",
     "tailwindcss": "^1.9.6",
-    "vue-template-compiler": "^2.6.12"
+    "vite": "^2.7.0",
+    "vite-plugin-vue2": "^1.9.3",
+    "vue-template-compiler": "^2.2.0"
   },
   "eslintConfig": {
     "root": true,
