@@ -2,7 +2,7 @@
 
 > A persistent audio player powered by vue and some visuals from [tailwindcss](https://github.com/tailwindcss/tailwindcss), [v-tooltip](https://github.com/Akryum/v-tooltip), [v-progress](https://github.com/MissHoya/v-progress), [vue-ionicons](https://mazipan.github.io/vue-ionicons) & [xns-seek-bar](https://github.com/xinnks/xns-seek-bar)
 
-## [Demo](https://xns-audio-player.netlify.com/ "Demo")
+## [Demo](https://xap.jamesinkala.com "Demo")
 
 ![xns-audio-player](https://res.cloudinary.com/djx5h4cjt/image/upload/cs_tinysrgb,fl_force_strip,q_51/v1616683528/xns-audio-player/xap-m-p.gif)
 
